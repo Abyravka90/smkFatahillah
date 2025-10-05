@@ -52,6 +52,7 @@ class ProfileController extends Controller
             'tiktok' => $request->input('tiktok'),
             'twitter' => $request->input('twitter'),
             'no_telp' => $request->input('no_telp'),
+            'youtube' => $request->input('youtube'),
         ]);
 
         if($profile){
@@ -84,6 +85,7 @@ class ProfileController extends Controller
             'tiktok' => $request->input('tiktok'),
             'twitter' => $request->input('twitter'),
             'no_telp' => $request->input('no_telp'),
+            'youtube' => $request->input('youtube'),
         ];
         
         // Handle image upload

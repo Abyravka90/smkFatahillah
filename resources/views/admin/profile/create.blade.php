@@ -100,6 +100,15 @@
                                 @enderror
                             </div>
                             <div class="form-group">
+                                <label>Youtube</label>
+                                <input type="text" name="youtube" value="{{ old('youtube') }}" placeholder="Masukkan Link Youtube" class="form-control @error('youtube') is-invalid @enderror">
+                                @error('youtube')
+                                <div class="invalid-feedback" style="display: block">
+                                    {{ $message }}
+                                </div>
+                                @enderror
+                            </div>
+                            <div class="form-group">
                                 <label>Facebook</label>
                                 <input type="text" name="facebook" value="{{ old('facebook') }}" placeholder="Masukkan Link Facebook" class="form-control @error('facebook') is-invalid @enderror">
                                 @error('facebook')

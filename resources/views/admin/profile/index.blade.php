@@ -35,6 +35,7 @@
                 <th>Map</th>
                 <th>No Telp</th>
                 <th>Instagram</th>
+                <th>Youtube</th>
                 <th>Facebook</th>
                 <th>TikTok</th>
                 <th>Twitter</th>
@@ -61,7 +62,7 @@
                   </td>
 
                   <td>
-                    <span>{{ \Illuminate\Support\Str::limit(strip_tags($profile->content), 150, '…') }}</span>
+                    <span>{{ Str::limit(strip_tags($profile->content), 150, 'Selengkapnya') }}</span>
                     <a href="javascript:void(0)"
                        data-toggle="modal"
                        data-target="#contentModal"
@@ -86,6 +87,13 @@
                   <td>
                     @if($profile->instagram)
                       <a href="{{ $profile->instagram }}" target="_blank" rel="noopener">Instagram</a>
+                    @else
+                      <span class="text-muted">-</span>
+                    @endif
+                  </td>
+                  <td>
+                    @if($profile->youtube)
+                      <a href="{{ $profile->youtube }}" target="_blank" rel="noopener">Youtube</a>
                     @else
                       <span class="text-muted">-</span>
                     @endif

@@ -20,6 +20,7 @@ return new class extends Migration
             $table->text('content');
             $table->text('map');
             $table->string('no_telp')->nullable();
+            $table->string('youtube')->nullable();
             $table->string('instagram')->nullable();
             $table->string('facebook')->nullable();
             $table->string('tiktok')->nullable();

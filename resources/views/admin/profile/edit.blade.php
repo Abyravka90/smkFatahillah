@@ -126,6 +126,15 @@
                                 </div>
                                 @enderror
                             </div>
+                            <div class="form-group">
+                                <label>Youtube</label>
+                                <input type="text" name="youtube" value="{{ old('youtube', $profile->youtube) }}" placeholder="Masukkan Link Youtube" class="form-control @error('youtube') is-invalid @enderror">
+                                @error('tiktok')
+                                <div class="invalid-feedback" style="display: block">
+                                    {{ $message }}
+                                </div>
+                                @enderror
+                            </div>
 
                             <button class="btn btn-primary mr-1 btn-submit" type="submit"><i class="fa fa-paper-plane"></i> Update</button>
                             <button class="btn btn-warning btn-reset" type="reset"><i class="fa fa-redo"></i> RESET</button>

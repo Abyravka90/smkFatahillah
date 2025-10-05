@@ -92,9 +92,13 @@ class UserController extends Controller
         $user->delete();
 
         if($user){
-            return redirect()->route('admin.user.index')->with(['success' => 'Data Berhasil Dihapus']);
+            return response()->json([
+                'status' => 'success'
+            ]);
         } else {
-            return redirect()->route('admin.user.index')->with(['error' => 'Data Gagal Dihapus']);
+                        return response()->json([
+                'status' => 'error'
+            ]);
         }
     }
 

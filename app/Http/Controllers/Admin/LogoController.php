@@ -1,15 +1,15 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace App\Http\Controllers\Admin;
 
 use App\Models\Logo;
 use Illuminate\Http\Request;
+use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Storage;
 
 class LogoController extends Controller
 {
     //
-
     public function __construct(){
         $this->middleware('permission:sliders.index')->only(['index']);
         $this->middleware('permission:sliders.create')->only(['store']);
