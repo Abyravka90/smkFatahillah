@@ -31,9 +31,8 @@
 
                             <div class="form-group">
                                 <label>EMBED YOUTUBE</label>
-                                <input type="text" name="embed" value="{{ old('embed') }}" placeholder="Masukkan Embed YouTube" class="form-control @error('embed') is-invalid @enderror">
-
-                                @error('embed')
+                                <textarea name="embbed" placeholder="Masukkan Embbed YouTube" class="form-control @error('embbed') is-invalid @enderror">{{ old('embbed') }}</textarea>
+                                @error('embbed')
                                 <div class="invalid-feedback" style="display: block">
                                     {{ $message }}
                                 </div>

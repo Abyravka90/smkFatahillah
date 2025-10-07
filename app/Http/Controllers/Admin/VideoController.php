@@ -78,7 +78,7 @@ class VideoController extends Controller
             ]);
         }else {
             return response()->json([
-                'error' => 'Data berhasil dihapus'
+                'error' => 'Data gagal dihapus'
             ]);
         }
     }

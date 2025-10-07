@@ -31,7 +31,7 @@
 
                             <div class="form-group">
                                 <label>EMBED YOUTUBE</label>
-                                <input type="text" name="embed" value="{{ old('embed', $video->embed) }}" placeholder="Masukkan Embed YouTube" class="form-control @error('embed') is-invalid @enderror">
+                                <input type="text" name="embbed" value="{{ old('embbed', $video->embbed) }}" placeholder="Masukkan Embed YouTube" class="form-control @error('embbed') is-invalid @enderror">
 
                                 @error('embed')
                                 <div class="invalid-feedback" style="display: block">
@@ -46,6 +46,16 @@
                         </form>
                     </div>
                 </div>
+                <div class="ratio ratio-16x9" style="max-width:720px;margin:16px auto">
+  <iframe
+    src="https://www.youtube.com/embed/6ReuIOJ9RV0?controls=1&rel=0&modestbranding=1&playsinline=1"
+    title="YouTube"
+    frameborder="0"
+    allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+    allowfullscreen
+  ></iframe>
+</div>
+
             </div>
         </section>
     </div>
