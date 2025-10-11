@@ -15,6 +15,7 @@ use App\Http\Controllers\Admin\SliderController;
 use App\Http\Controllers\Admin\ProfileController;
 use App\Http\Controllers\Admin\CategoryController;
 use App\Http\Controllers\Admin\DashboardController;
+use App\Http\Controllers\Admin\JurusanController;
 use App\Http\Controllers\Admin\PermissionController;
 
 Route::get('/', [LoginController::class, 'showLoginForm']);
@@ -100,6 +101,13 @@ Route::prefix('admin')->group(function(){
             'except' => ['show'],
             'as' => 'admin'
         ]);
+
+        Route::resource('/jurusan', JurusanController::class,
+        [
+            'except' => ['show'],
+            'as' => 'admin'
+        ]
+        );
 
 
     });

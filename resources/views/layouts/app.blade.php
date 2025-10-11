@@ -92,6 +92,11 @@
                                 href="{{ route('admin.event.index') }}"><i class="fas fa-bell"></i>
                                 <span>Event</span></a></li>
                         @endcan
+                        @can('users.index')
+                        <li class="{{ setActive('admin/jurusan') }}"><a class="nav-link"
+                                href="{{ route('admin.jurusan.index') }}"><i class="fas fa-graduation-cap"></i>
+                                <span>Jurusan</span></a></li>
+                        @endcan
 
                         @if(auth()->user()->can('photos.index') || auth()->user()->can('videos.index'))
                         <li class="menu-header">GALERI</li>
