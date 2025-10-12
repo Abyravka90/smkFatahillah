@@ -16,6 +16,7 @@ use App\Http\Controllers\Admin\ProfileController;
 use App\Http\Controllers\Admin\CategoryController;
 use App\Http\Controllers\Admin\DashboardController;
 use App\Http\Controllers\Admin\JurusanController;
+use App\Http\Controllers\Admin\OTKPController;
 use App\Http\Controllers\Admin\PermissionController;
 
 Route::get('/', [LoginController::class, 'showLoginForm']);
@@ -103,6 +104,13 @@ Route::prefix('admin')->group(function(){
         ]);
 
         Route::resource('/jurusan', JurusanController::class,
+        [
+            'except' => ['show'],
+            'as' => 'admin'
+        ]
+        );
+
+        Route::resource('/otkp', OTKPController::class,
         [
             'except' => ['show'],
             'as' => 'admin'
