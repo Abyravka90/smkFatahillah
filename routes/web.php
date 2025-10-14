@@ -18,6 +18,7 @@ use App\Http\Controllers\Admin\DashboardController;
 use App\Http\Controllers\Admin\JurusanController;
 use App\Http\Controllers\Admin\OTKPController;
 use App\Http\Controllers\Admin\PermissionController;
+use App\Http\Controllers\Admin\TKRController;
 
 Route::get('/', [LoginController::class, 'showLoginForm']);
 
@@ -111,6 +112,13 @@ Route::prefix('admin')->group(function(){
         );
 
         Route::resource('/otkp', OTKPController::class,
+        [
+            'except' => ['show'],
+            'as' => 'admin'
+        ]
+        );
+
+        Route::resource('/tkr', TKRController::class,
         [
             'except' => ['show'],
             'as' => 'admin'

@@ -16,7 +16,7 @@ class OTKPController extends Controller
     public function index()
     {
         //
-        $otkps = OTKP::latest()->paginate(10);
+        $otkps = OTKP::latest()->paginate(1);
         $cek_otkp = OTKP::count();
         return view('admin.otkp.index', compact('otkps', 'cek_otkp'));
     }

@@ -78,6 +78,12 @@
                         @if (auth()->user()->name == 'Manajemen Perkantoran')
                             <li class="{{ setActive('admin/otkp') }}"><a class="nav-link" href="{{ route('admin.otkp.index') }}"><i class="fas fa-book-open"></i><span>Manajemen Perkantoran</span></a></li>
                         @endif
+                        @if (auth()->user()->name == 'Teknik Kendaraan Ringan')
+                            <li class="{{ setActive('admin/tkr') }}"><a class="nav-link" href="{{ route('admin.tkr.index') }}"><i class="fas fa-book-open"></i><span>Teknik Kendaraan Ringan</span></a></li>
+                        @endif
+
+
+
                         @can('tags.index')
                         <li class="{{ setActive('admin/tag') }}"><a class="nav-link"
                                 href="{{ route('admin.tag.index') }}"><i class="fas fa-tags"></i> <span>Tags</span></a>
