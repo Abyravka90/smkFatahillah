@@ -81,6 +81,9 @@
                         @if (auth()->user()->name == 'Teknik Kendaraan Ringan')
                             <li class="{{ setActive('admin/tkr') }}"><a class="nav-link" href="{{ route('admin.tkr.index') }}"><i class="fas fa-book-open"></i><span>Teknik Kendaraan Ringan</span></a></li>
                         @endif
+                        @if (auth()->user()->name == 'Teknik Pemesinan')
+                            <li class="{{ setActive('admin/tkr') }}"><a class="nav-link" href="{{ route('admin.tp.index') }}"><i class="fas fa-book-open"></i><span>Teknik Pemesinan</span></a></li>
+                        @endif
 
 
 

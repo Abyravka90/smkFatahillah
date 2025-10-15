@@ -70,7 +70,7 @@ class TKRController extends Controller
     /**
      * Show the form for editing the specified resource.
      */
-    public function edit(Request $request, TeknikKendaraanRingan $tkr)
+    public function edit(TeknikKendaraanRingan $tkr)
     {
         //
         return view('admin.tkr.edit', compact('tkr'));
@@ -89,7 +89,7 @@ class TKRController extends Controller
         ]);
 
         if($request->file('image') == ''){
-            $tkr = TeknikKendaraanRingan::create([
+            $tkr->update([
                 'name' => $request->input('name'),
                 'content' => $request->input('content')
             ]); 
