@@ -3,21 +3,21 @@
 namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
-use App\Models\Profile;
+use App\Models\TeknikPemesinan;
 use Illuminate\Http\Request;
 
-class ProfileController extends Controller
+class TPController extends Controller
 {
     //
     public function index(){
-        $profile = Profile::latest()->first();
-        if($profile){
+        $tp = TeknikPemesinan::latest()->first();
+        if($tp){
             return response()->json([
                 'response' => [
-                    'status' => 200, 
-                    'message' => 'List Data Profile'
-                ], 'data' => $profile
-            ],200);  
+                    'status' => 200,
+                    'message' => 'List Data TP'
+                ], 'data' => $tp
+            ], 200);
         }else{
             return response()->json([
                 'response' => [

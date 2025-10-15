@@ -18,6 +18,7 @@ use App\Http\Controllers\Admin\DashboardController;
 use App\Http\Controllers\Admin\JurusanController;
 use App\Http\Controllers\Admin\OTKPController;
 use App\Http\Controllers\Admin\PermissionController;
+use App\Http\Controllers\Admin\TKJController;
 use App\Http\Controllers\Admin\TKRController;
 use App\Http\Controllers\Admin\TPController;
 
@@ -127,6 +128,13 @@ Route::prefix('admin')->group(function(){
         );
 
         Route::resource('/tp', TPController::class,
+        [
+            'except' => ['show'],
+            'as' => 'admin'
+        ]
+        );
+
+        Route::resource('/tkj', TKJController::class,
         [
             'except' => ['show'],
             'as' => 'admin'

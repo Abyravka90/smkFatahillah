@@ -82,9 +82,11 @@
                             <li class="{{ setActive('admin/tkr') }}"><a class="nav-link" href="{{ route('admin.tkr.index') }}"><i class="fas fa-book-open"></i><span>Teknik Kendaraan Ringan</span></a></li>
                         @endif
                         @if (auth()->user()->name == 'Teknik Pemesinan')
-                            <li class="{{ setActive('admin/tkr') }}"><a class="nav-link" href="{{ route('admin.tp.index') }}"><i class="fas fa-book-open"></i><span>Teknik Pemesinan</span></a></li>
+                            <li class="{{ setActive('admin/tp') }}"><a class="nav-link" href="{{ route('admin.tp.index') }}"><i class="fas fa-book-open"></i><span>Teknik Pemesinan</span></a></li>
                         @endif
-
+                        @if (auth()->user()->name == 'Teknik Komputer Jaringan')
+                            <li class="{{ setActive('admin/tkj') }}"><a class="nav-link" href="{{ route('admin.tkj.index') }}"><i class="fas fa-book-open"></i><span>Teknik Komputer Jaringan</span></a></li>
+                        @endif
 
 
                         @can('tags.index')

@@ -1,0 +1,30 @@
+<?php
+
+namespace App\Http\Controllers\Api;
+
+use App\Http\Controllers\Controller;
+use App\Models\TeknikKendaraanRingan;
+use Illuminate\Http\Request;
+
+class TKRController extends Controller
+{
+    //
+    public function index() {
+        $tkr = TeknikKendaraanRingan::latest()->first();
+        if($tkr){
+                return response()->json([
+                    'response' => [
+                        'status' => 200,
+                        'message' => 'List Data TKR'
+                    ], 'data' => $tkr
+                ], 200);
+            } else {
+                return response()->json([
+                    'response' => [
+                        'status' => 404,
+                        'message' => 'Data Not Found'
+                    ], 'data' => null
+                ], 404);
+            }
+        }
+}

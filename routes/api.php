@@ -1,16 +1,20 @@
 <?php
 
-use App\Http\Controllers\Api\CategoryController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\Api\TagController;
+use App\Http\Controllers\Api\LogoController;
+use App\Http\Controllers\Api\OTKPController;
 use App\Http\Controllers\Api\PostController;
 use App\Http\Controllers\Api\EventController;
-use App\Http\Controllers\Api\LogoController;
 use App\Http\Controllers\Api\PhotoController;
-use App\Http\Controllers\Api\ProfileController;
-use App\Http\Controllers\Api\SliderController;
-use App\Http\Controllers\Api\TagController;
 use App\Http\Controllers\Api\VideoController;
+use App\Http\Controllers\Api\SliderController;
+use App\Http\Controllers\Api\ProfileController;
+use App\Http\Controllers\Api\CategoryController;
+use App\Http\Controllers\Api\TKJController;
+use App\Http\Controllers\Api\TPController;
+use App\Http\Controllers\Api\TKRController;
 
 Route::get('/user', function (Request $request) {
     return $request->user();
@@ -38,7 +42,12 @@ Route::get('/homepage/photo',[PhotoController::class, 'PhotoHomePage']);
 Route::get('/logo', [LogoController::class, 'index']);
 Route::get('/homepage/logo', [LogoController::class, 'LogoHomePage']);
 
-Route::get('/profile', [ProfileController::class, 'index']);
-
 Route::get('/video', [VideoController::class, 'index']);
+
 Route::get('/homepage/video', [VideoController::class, 'VideoHomePage']);
+
+Route::get('/profile', [ProfileController::class, 'index']);
+Route::get('/otkp', [OTKPController::class, 'index']);
+Route::get('/tkj', [TKJController::class, 'index']);
+Route::get('/tkr', [TKRController::class, 'index']);
+Route::get('/tp', [TPController::class, 'index']);
