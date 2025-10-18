@@ -10,7 +10,7 @@ class KurikulumController extends Controller
 {
     //
     public function index(){
-        $kurikulum = Kurikulum::latest()->paginate(1);
+        $kurikulum = Kurikulum::latest()->first();
         if($kurikulum){
             return response()->json([
                 'response' => [
