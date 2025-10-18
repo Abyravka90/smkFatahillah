@@ -16,6 +16,8 @@ use App\Http\Controllers\Admin\ProfileController;
 use App\Http\Controllers\Admin\CategoryController;
 use App\Http\Controllers\Admin\DashboardController;
 use App\Http\Controllers\Admin\JurusanController;
+use App\Http\Controllers\Admin\KesiswaanController;
+use App\Http\Controllers\Admin\KurikulumController;
 use App\Http\Controllers\Admin\OTKPController;
 use App\Http\Controllers\Admin\PermissionController;
 use App\Http\Controllers\Admin\TKJController;
@@ -141,6 +143,15 @@ Route::prefix('admin')->group(function(){
         ]
         );
 
-
+        Route::resource('/kesiswaan', KesiswaanController::class,
+        [
+            'except' => ['show'],
+            'as' => 'admin'
+        ]);
+        Route::resource('/kurikulum', KurikulumController::class,
+        [
+            'except' => ['show'],
+            'as' => 'admin'
+        ]);
     });
 });

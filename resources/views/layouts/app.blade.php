@@ -76,16 +76,22 @@
                         @endcan
 
                         @if (auth()->user()->name == 'Manajemen Perkantoran')
-                            <li class="{{ setActive('admin/otkp') }}"><a class="nav-link" href="{{ route('admin.otkp.index') }}"><i class="fas fa-book-open"></i><span>Manajemen Perkantoran</span></a></li>
+                            <li class="{{ setActive('admin/otkp') }}"><a class="nav-link" href="{{ route('admin.otkp.index') }}"><i class="fas fa-book-open"></i><span>Pages</span></a></li>
                         @endif
-                        @if (auth()->user()->name == 'Teknik Kendaraan Ringan')
-                            <li class="{{ setActive('admin/tkr') }}"><a class="nav-link" href="{{ route('admin.tkr.index') }}"><i class="fas fa-book-open"></i><span>Teknik Kendaraan Ringan</span></a></li>
+                        @if (auth()->user()->name == 'Teknik Kendaraan Ringan Otomotif')
+                            <li class="{{ setActive('admin/tkr') }}"><a class="nav-link" href="{{ route('admin.tkr.index') }}"><i class="fas fa-book-open"></i><span>Pages</span></a></li>
                         @endif
                         @if (auth()->user()->name == 'Teknik Pemesinan')
-                            <li class="{{ setActive('admin/tp') }}"><a class="nav-link" href="{{ route('admin.tp.index') }}"><i class="fas fa-book-open"></i><span>Teknik Pemesinan</span></a></li>
+                            <li class="{{ setActive('admin/tp') }}"><a class="nav-link" href="{{ route('admin.tp.index') }}"><i class="fas fa-book-open"></i><span>Pages</span></a></li>
                         @endif
                         @if (auth()->user()->name == 'Teknik Komputer Jaringan')
-                            <li class="{{ setActive('admin/tkj') }}"><a class="nav-link" href="{{ route('admin.tkj.index') }}"><i class="fas fa-book-open"></i><span>Teknik Komputer Jaringan</span></a></li>
+                            <li class="{{ setActive('admin/tkj') }}"><a class="nav-link" href="{{ route('admin.tkj.index') }}"><i class="fas fa-book-open"></i><span>Pages</span></a></li>
+                        @endif
+                        @if (auth()->user()->name == 'Kesiswaan')
+                            <li class="{{ setActive('admin/kesiswaan') }}"><a class="nav-link" href="{{ route('admin.kesiswaan.index') }}"><i class="fas fa-book-open"></i><span>Pages</span></a></li>
+                        @endif
+                        @if (auth()->user()->name == 'Kurikulum')
+                            <li class="{{ setActive('admin/kurikulum') }}"><a class="nav-link" href="{{ route('admin.kurikulum.index') }}"><i class="fas fa-book-open"></i><span>Pages</span></a></li>
                         @endif
 
 
