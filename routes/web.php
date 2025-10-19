@@ -17,6 +17,7 @@ use App\Http\Controllers\Admin\CategoryController;
 use App\Http\Controllers\Admin\DashboardController;
 use App\Http\Controllers\Admin\JurusanController;
 use App\Http\Controllers\Admin\KesiswaanController;
+use App\Http\Controllers\Admin\KontributorController;
 use App\Http\Controllers\Admin\KurikulumController;
 use App\Http\Controllers\Admin\OTKPController;
 use App\Http\Controllers\Admin\PermissionController;
@@ -148,7 +149,14 @@ Route::prefix('admin')->group(function(){
             'except' => ['show'],
             'as' => 'admin'
         ]);
+        
         Route::resource('/kurikulum', KurikulumController::class,
+        [
+            'except' => ['show'],
+            'as' => 'admin'
+        ]);
+
+        Route::resource('/kontributor', KontributorController::class,
         [
             'except' => ['show'],
             'as' => 'admin'

@@ -94,6 +94,9 @@
                             <li class="{{ setActive('admin/kurikulum') }}"><a class="nav-link" href="{{ route('admin.kurikulum.index') }}"><i class="fas fa-book-open"></i><span>Pages</span></a></li>
                         @endif
 
+                        <li class="{{ setActive('admin/kontributor') }}"><a class="nav-link"
+                                href="{{ route('admin.kontributor.index') }}"><i class="fas fa-book-open"></i>
+                                <span>Kontributor</span></a></li>
 
                         @can('tags.index')
                         <li class="{{ setActive('admin/tag') }}"><a class="nav-link"

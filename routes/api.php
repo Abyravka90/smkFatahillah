@@ -12,7 +12,9 @@ use App\Http\Controllers\Api\VideoController;
 use App\Http\Controllers\Api\SliderController;
 use App\Http\Controllers\Api\ProfileController;
 use App\Http\Controllers\Api\CategoryController;
+use App\Http\Controllers\Api\JurusanController;
 use App\Http\Controllers\Api\KesiswaanController;
+use App\Http\Controllers\Api\KontributorController;
 use App\Http\Controllers\Api\KurikulumController;
 use App\Http\Controllers\Api\TKJController;
 use App\Http\Controllers\Api\TPController;
@@ -55,3 +57,6 @@ Route::get('/tkr', [TKRController::class, 'index']);
 Route::get('/tp', [TPController::class, 'index']);
 Route::get('/kesiswaan', [KesiswaanController::class, 'index']);
 Route::get('/kurikulum', [KurikulumController::class, 'index']);
+
+Route::get('/kontributor/{id}', [KontributorController::class, 'show']);
+Route::get('/jurusan', [JurusanController::class, 'index']);
