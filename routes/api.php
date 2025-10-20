@@ -59,4 +59,5 @@ Route::get('/kesiswaan', [KesiswaanController::class, 'index']);
 Route::get('/kurikulum', [KurikulumController::class, 'index']);
 
 Route::get('/kontributor/{id}', [KontributorController::class, 'show']);
+Route::get('/kontributor/detail/{id}', [KontributorController::class, 'detail']);
 Route::get('/jurusan', [JurusanController::class, 'index']);
