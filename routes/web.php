@@ -15,12 +15,14 @@ use App\Http\Controllers\Admin\SliderController;
 use App\Http\Controllers\Admin\ProfileController;
 use App\Http\Controllers\Admin\CategoryController;
 use App\Http\Controllers\Admin\DashboardController;
+use App\Http\Controllers\Admin\FasilitasController;
 use App\Http\Controllers\Admin\JurusanController;
 use App\Http\Controllers\Admin\KesiswaanController;
 use App\Http\Controllers\Admin\KontributorController;
 use App\Http\Controllers\Admin\KurikulumController;
 use App\Http\Controllers\Admin\OTKPController;
 use App\Http\Controllers\Admin\PermissionController;
+use App\Http\Controllers\Admin\SpmbController;
 use App\Http\Controllers\Admin\TKJController;
 use App\Http\Controllers\Admin\TKRController;
 use App\Http\Controllers\Admin\TPController;
@@ -157,6 +159,18 @@ Route::prefix('admin')->group(function(){
         ]);
 
         Route::resource('/kontributor', KontributorController::class,
+        [
+            'except' => ['show'],
+            'as' => 'admin'
+        ]);
+
+        Route::resource('/fasilitas', FasilitasController::class,
+        [
+            'except' => ['show'],
+            'as' => 'admin'
+        ]);
+
+        Route::resource('/spmb', SpmbController::class,
         [
             'except' => ['show'],
             'as' => 'admin'

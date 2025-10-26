@@ -130,6 +130,16 @@
                                 href="{{ route('admin.photo.index') }}"><i class="fas fa-image"></i>
                                 <span>Foto</span></a></li>
                         @endcan
+                        @can('photos.index')
+                        <li class="{{ setActive('admin/fasilitas') }}"><a class="nav-link"
+                                href="{{ route('admin.fasilitas.index') }}"><i class="fas fa-home"></i>
+                                <span>Fasilitas</span></a></li>
+                        @endcan
+                        @can('photos.index')
+                        <li class="{{ setActive('admin/spmb') }}"><a class="nav-link"
+                                href="{{ route('admin.spmb.index') }}"><i class="fas fa-user"></i>
+                                <span>SPMB</span></a></li>
+                        @endcan
 
                         @can('videos.index')
                         <li class="{{ setActive('admin/video') }}"><a class="nav-link"
