@@ -5,7 +5,7 @@
     <meta charset="UTF-8">
     <meta content="width=device-width, initial-scale=1, maximum-scale=1, shrink-to-fit=no" name="viewport">
     <meta name="csrf-token" content="{{ csrf_token() }}">
-    <title>Dashboard &mdash; SMK Maniis Purwakarta</title>
+    <title>Dashboard &mdash; SMK Fatahillah Cileungsi</title>
     <link rel="shortcut icon" href="{{ asset('assets/img/school.svg') }}" type="image/x-icon">
     <!-- General CSS Files -->
     <link rel="stylesheet" href="{{ asset('assets/modules/bootstrap/css/bootstrap.min.css') }}">
@@ -59,7 +59,7 @@
             <div class="main-sidebar sidebar-style-2">
                 <aside id="sidebar-wrapper">
                     <div class="sidebar-brand">
-                        <a href="{{ route('admin.dashboard.index') }}">SMK Maniis Purwakarta</a>
+                        <a href="{{ route('admin.dashboard.index') }}">SMK Fatahillah Cileungsi</a>
                     </div>
                     <div class="sidebar-brand sidebar-brand-sm">
                         <a href="index.html">SMK</a>
