@@ -1,0 +1,45 @@
+name: Deploy to Hostinger (FTP)
+on:
+  push:
+    branches: [ "main" ]
+  workflow_dispatch:
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Setup PHP 8.2
+        uses: shivammathur/setup-php@v2
+        with:
+          php-version: "8.2"
+          tools: composer
+
+      - name: Composer install (prod)
+        run: composer install --no-dev --prefer-dist --optimize-autoloader
+
+      - name: Prepare artifact
+        run: |
+          mkdir -p deploy
+          rsync -av --delete \
+            --exclude=".git" --exclude=".github" \
+            --exclude="node_modules" --exclude="tests" \
+            --exclude="storage" \
+            ./ ./deploy/
+          mkdir -p deploy/storage/app
+          if [ -d storage/app/public ]; then
+            rsync -av storage/app/public/ deploy/storage/app/public/
+          fi
+          rm -f deploy/.env || true
+
+      - name: Upload to Hostinger via FTP
+        uses: SamKirkland/FTP-Deploy-Action@v4.3.4
+        with:
+          server:     ${{ secrets.SFTP_HOST }}
+          username:   ${{ secrets.SFTP_USER }}
+          password:   ${{ secrets.SFTP_PASS }}
+          protocol:   ftp
+          port:       ${{ secrets.SFTP_PORT }}
+          local-dir:  deploy
+          server-dir: /home/smkfatahillah/be
