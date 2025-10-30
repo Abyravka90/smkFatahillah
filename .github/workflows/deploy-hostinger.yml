@@ -42,4 +42,4 @@ jobs:
           protocol:   ftp
           port:       ${{ secrets.SFTP_PORT }}
           local-dir:  deploy
-          server-dir: /home/smkfatahillah/be
+          server-dir: /home/smkfatahillah/be/
