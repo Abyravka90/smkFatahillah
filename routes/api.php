@@ -19,8 +19,7 @@ use App\Http\Controllers\Api\KontributorController;
 use App\Http\Controllers\Api\KurikulumController;
 use App\Http\Controllers\Api\SpmbController;
 use App\Http\Controllers\Api\TKJController;
-use App\Http\Controllers\Api\TPController;
-use App\Http\Controllers\Api\TKRController;
+
 
 Route::get('/user', function (Request $request) {
     return $request->user();
@@ -55,8 +54,6 @@ Route::get('/homepage/video', [VideoController::class, 'VideoHomePage']);
 Route::get('/profile', [ProfileController::class, 'index']);
 Route::get('/otkp', [OTKPController::class, 'index']);
 Route::get('/tkj', [TKJController::class, 'index']);
-Route::get('/tkr', [TKRController::class, 'index']);
-Route::get('/tp', [TPController::class, 'index']);
 Route::get('/kesiswaan', [KesiswaanController::class, 'index']);
 Route::get('/kurikulum', [KurikulumController::class, 'index']);
 

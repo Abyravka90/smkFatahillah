@@ -24,8 +24,6 @@ use App\Http\Controllers\Admin\OTKPController;
 use App\Http\Controllers\Admin\PermissionController;
 use App\Http\Controllers\Admin\SpmbController;
 use App\Http\Controllers\Admin\TKJController;
-use App\Http\Controllers\Admin\TKRController;
-use App\Http\Controllers\Admin\TPController;
 
 Route::get('/', [LoginController::class, 'showLoginForm']);
 
@@ -119,20 +117,6 @@ Route::prefix('admin')->group(function(){
         );
 
         Route::resource('/otkp', OTKPController::class,
-        [
-            'except' => ['show'],
-            'as' => 'admin'
-        ]
-        );
-
-        Route::resource('/tkr', TKRController::class,
-        [
-            'except' => ['show'],
-            'as' => 'admin'
-        ]
-        );
-
-        Route::resource('/tp', TPController::class,
         [
             'except' => ['show'],
             'as' => 'admin'
