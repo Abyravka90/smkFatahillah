@@ -78,12 +78,6 @@
                         @if (auth()->user()->name == 'Manajemen Perkantoran')
                             <li class="{{ setActive('admin/otkp') }}"><a class="nav-link" href="{{ route('admin.otkp.index') }}"><i class="fas fa-book-open"></i><span>Pages</span></a></li>
                         @endif
-                        @if (auth()->user()->name == 'Teknik Kendaraan Ringan Otomotif')
-                            <li class="{{ setActive('admin/tkr') }}"><a class="nav-link" href="{{ route('admin.tkr.index') }}"><i class="fas fa-book-open"></i><span>Pages</span></a></li>
-                        @endif
-                        @if (auth()->user()->name == 'Teknik Pemesinan')
-                            <li class="{{ setActive('admin/tp') }}"><a class="nav-link" href="{{ route('admin.tp.index') }}"><i class="fas fa-book-open"></i><span>Pages</span></a></li>
-                        @endif
                         @if (auth()->user()->name == 'Teknik Komputer Jaringan')
                             <li class="{{ setActive('admin/tkj') }}"><a class="nav-link" href="{{ route('admin.tkj.index') }}"><i class="fas fa-book-open"></i><span>Pages</span></a></li>
                         @endif
@@ -125,17 +119,17 @@
                         <li class="menu-header">GALERI</li>
                         @endif
                         
-                        @can('photos.index')
+                        @can('roles.index')
                         <li class="{{ setActive('admin/photo') }}"><a class="nav-link"
                                 href="{{ route('admin.photo.index') }}"><i class="fas fa-image"></i>
                                 <span>Foto</span></a></li>
                         @endcan
-                        @can('photos.index')
+                        @can('roles.index')
                         <li class="{{ setActive('admin/fasilitas') }}"><a class="nav-link"
                                 href="{{ route('admin.fasilitas.index') }}"><i class="fas fa-home"></i>
                                 <span>Fasilitas</span></a></li>
                         @endcan
-                        @can('photos.index')
+                        @can('roles.index')
                         <li class="{{ setActive('admin/spmb') }}"><a class="nav-link"
                                 href="{{ route('admin.spmb.index') }}"><i class="fas fa-user"></i>
                                 <span>SPMB</span></a></li>
@@ -161,7 +155,7 @@
                                 href="{{ route('admin.logo.index') }}"><i class="fas fa-image"></i>
                                 <span>logo</span></a></li>
                         @endcan
-                        @can('posts.index')
+                        @can('roles.index')
                         <li class="{{ setActive('admin/profile') }}"><a class="nav-link"
                                 href="{{ route('admin.profile.index') }}"><i class="fas fa-user"></i>
                                 <span>Profil</span></a></li>
