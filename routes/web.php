@@ -22,6 +22,7 @@ use App\Http\Controllers\Admin\KontributorController;
 use App\Http\Controllers\Admin\KurikulumController;
 use App\Http\Controllers\Admin\OTKPController;
 use App\Http\Controllers\Admin\PermissionController;
+use App\Http\Controllers\Admin\PramukaController;
 use App\Http\Controllers\Admin\SpmbController;
 use App\Http\Controllers\Admin\TKJController;
 
@@ -117,6 +118,13 @@ Route::prefix('admin')->group(function(){
         );
 
         Route::resource('/otkp', OTKPController::class,
+        [
+            'except' => ['show'],
+            'as' => 'admin'
+        ]
+        );
+
+        Route::resource('/pramuka', PramukaController::class,
         [
             'except' => ['show'],
             'as' => 'admin'

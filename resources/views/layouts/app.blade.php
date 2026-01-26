@@ -87,6 +87,9 @@
                         @if (auth()->user()->name == 'Kurikulum')
                             <li class="{{ setActive('admin/kurikulum') }}"><a class="nav-link" href="{{ route('admin.kurikulum.index') }}"><i class="fas fa-book-open"></i><span>Pages</span></a></li>
                         @endif
+                        @if (auth()->user()->name == 'Pramuka')
+                            <li class="{{ setActive('admin/pramuka') }}"><a class="nav-link" href="{{ route('admin.pramuka.index') }}"><i class="fas fa-book-open"></i><span>Pages</span></a></li>                            
+                        @endif
 
                         <li class="{{ setActive('admin/kontributor') }}"><a class="nav-link"
                                 href="{{ route('admin.kontributor.index') }}"><i class="fas fa-book-open"></i>
@@ -197,7 +200,7 @@
 
             <footer class="main-footer">
                 <div class="footer-left">
-                    Copyright &copy; 2025 <div class="bullet"></div> SMK Maniis <div class="bullet"></div> All Rights
+                    Copyright &copy; 2025 <div class="bullet"></div> SMK Fatahillah Cileungsi <div class="bullet"></div> All Rights
                     Reserved.
                 </div>
                 <div class="footer-right">
