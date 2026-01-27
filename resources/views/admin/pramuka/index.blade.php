@@ -59,7 +59,7 @@
 
                     
                       <button type="button" class="btn btn-sm btn-danger"
-                              onclick="confirmDelete({{ $otkp->id }})">
+                              onclick="confirmDelete({{ $pramuka->id }})">
                         <i class="fa fa-trash"></i>
                       </button>
                       {{-- form delete akan disubmit setelah konfirmasi --}}

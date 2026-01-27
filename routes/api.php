@@ -17,6 +17,7 @@ use App\Http\Controllers\Api\JurusanController;
 use App\Http\Controllers\Api\KesiswaanController;
 use App\Http\Controllers\Api\KontributorController;
 use App\Http\Controllers\Api\KurikulumController;
+use App\Http\Controllers\Api\PramukaController;
 use App\Http\Controllers\Api\SpmbController;
 use App\Http\Controllers\Api\TKJController;
 
@@ -56,6 +57,7 @@ Route::get('/otkp', [OTKPController::class, 'index']);
 Route::get('/tkj', [TKJController::class, 'index']);
 Route::get('/kesiswaan', [KesiswaanController::class, 'index']);
 Route::get('/kurikulum', [KurikulumController::class, 'index']);
+Route::get('/pramuka', [PramukaController::class, 'index']);
 
 Route::get('/kontributor/{id}', [KontributorController::class, 'show']);
 Route::get('/kontributor/detail/{id}', [KontributorController::class, 'detail']);

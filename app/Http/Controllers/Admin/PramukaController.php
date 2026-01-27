@@ -31,15 +31,21 @@ class PramukaController extends Controller
             'content' => 'required',
         ]);
 
-        $image = $request->file('image');
+        if($request->has('image')){
+            $image = $request->file('image');
+            $image->storeAs('pramuka', $image->hashName(),'public');
+            $pramukas = Pramuka::create([
+                'name' => $request->input('name'),
+                'content' => $request->input('content'),
+                'image' => $image->hashName(),
+            ]);
+        }else{
+            $pramukas = Pramuka::create([
+                'name' => $request->input('name'),
+                'content' => $request->input('content'),
+            ]);
+        }
 
-        $image->storeAs('pramuka', $image->hashName(),'public');
-
-        $pramukas = Pramuka::create([
-            'name' => $request->input('name'),
-            'content' => $request->input('content'),
-            'image' => $image->hashName(),
-        ]);
         if($pramukas){
             return redirect()->route('admin.pramuka.index')->with('success', 'Data Berhasil Ditambahkan');
         }else{
