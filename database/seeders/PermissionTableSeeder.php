@@ -13,60 +13,71 @@ class PermissionTableSeeder extends Seeder
      */
     public function run(): void
     {
-        //permsssion for post
-        Permission::create(['name' => 'posts.create']);
-        Permission::create(['name' => 'posts.index']);
-        Permission::create(['name' => 'posts.edit']);
-        Permission::create(['name' => 'posts.delete']);
+        $guardName = config('auth.defaults.guard', 'web');
 
-        // permission for tags
-        Permission::create(['name' => 'tags.create']);
-        Permission::create(['name' => 'tags.index']);
-        Permission::create(['name' => 'tags.edit']);
-        Permission::create(['name' => 'tags.delete']);
+        $permissions = [
+            // posts
+            'posts.create',
+            'posts.index',
+            'posts.edit',
+            'posts.delete',
 
-        // permission for categories
-        Permission::create(['name' => 'categories.create']);
-        Permission::create(['name' => 'categories.index']);
-        Permission::create(['name' => 'categories.edit']);
-        Permission::create(['name' => 'categories.delete']);
+            // tags
+            'tags.create',
+            'tags.index',
+            'tags.edit',
+            'tags.delete',
 
-        // permission for events
-        Permission::create(['name' => 'events.create']);
-        Permission::create(['name' => 'events.index']);
-        Permission::create(['name' => 'events.edit']);
-        Permission::create(['name' => 'events.delete']);
+            // categories
+            'categories.create',
+            'categories.index',
+            'categories.edit',
+            'categories.delete',
 
-        //permission dof photos
-        Permission::create(['name' => 'photos.create']);
-        Permission::create(['name' => 'photos.index']);
-        Permission::create(['name' => 'photos.delete']);
+            // events
+            'events.create',
+            'events.index',
+            'events.edit',
+            'events.delete',
 
-        //permission for videos
-        Permission::create(['name' => 'videos.create']);    
-        Permission::create(['name' => 'videos.index']);
-        Permission::create(['name' => 'videos.edit']);
-        Permission::create(['name' => 'videos.delete']);
+            // photos
+            'photos.create',
+            'photos.index',
+            'photos.delete',
 
-        //permission for sliders
-        Permission::create(['name' => 'sliders.create']);
-        Permission::create(['name' => 'sliders.index']);
-        Permission::create(['name' => 'sliders.delete']);
+            // videos
+            'videos.create',
+            'videos.index',
+            'videos.edit',
+            'videos.delete',
 
-        //permission for roles
-        Permission::create(['name' => 'roles.create']);
-        Permission::create(['name' => 'roles.index']);
-        Permission::create(['name' => 'roles.edit']);
-        Permission::create(['name' => 'roles.delete']);
+            // sliders
+            'sliders.create',
+            'sliders.index',
+            'sliders.delete',
 
-        //permission for permission;
-        Permission::create(['name' => 'permissions.index']);
+            // roles
+            'roles.create',
+            'roles.index',
+            'roles.edit',
+            'roles.delete',
 
-        //permission for users
-        Permission::create(['name' => 'users.create']);
-        Permission::create(['name' => 'users.index']);
-        Permission::create(['name' => 'users.edit']);
-        Permission::create(['name' => 'users.delete']);
+            // permissions
+            'permissions.index',
+            'permissions.create',
 
+            // users
+            'users.create',
+            'users.index',
+            'users.edit',
+            'users.delete',
+        ];
+
+        foreach ($permissions as $name) {
+            Permission::firstOrCreate(
+                ['name' => $name, 'guard_name' => $guardName],
+                ['name' => $name, 'guard_name' => $guardName]
+            );
+        }
     }
 }

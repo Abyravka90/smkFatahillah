@@ -9,6 +9,14 @@ use Illuminate\Support\Facades\Storage;
 
 class KesiswaanController extends Controller
 {
+    public function __construct()
+    {
+        $this->middleware(['permission:kesiswaan.index'])->only(['index']);
+        $this->middleware(['permission:kesiswaan.create'])->only(['create', 'store']);
+        $this->middleware(['permission:kesiswaan.edit'])->only(['edit', 'update']);
+        $this->middleware(['permission:kesiswaan.delete'])->only(['destroy']);
+    }
+
     /**
      * Display a listing of the resource.
      */

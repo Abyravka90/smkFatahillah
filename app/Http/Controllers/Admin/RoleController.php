@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 use Spatie\Permission\Models\Role;
 use App\Http\Controllers\Controller;
 use Spatie\Permission\Models\Permission;
+use Spatie\Permission\PermissionRegistrar;
 
 class RoleController extends Controller
 {
@@ -41,6 +42,7 @@ class RoleController extends Controller
 
         //assign permission to role
         $role->syncPermissions($request->input('permissions'));
+        app(PermissionRegistrar::class)->forgetCachedPermissions();
 
         if($role){
             return redirect()->route('admin.role.index')->with(['success'=>'Data Berhasil Disimpan']);
@@ -65,6 +67,7 @@ class RoleController extends Controller
         ]);
 
         $role->syncPermissions($request->input('permissions'));
+        app(PermissionRegistrar::class)->forgetCachedPermissions();
 
         if($role){
             return redirect()->route('admin.role.index')->with(['success' => 'Data Berhasil Diupdate']);
@@ -78,6 +81,7 @@ class RoleController extends Controller
         $permissions = $role->permissions;
         $role->revokePermissionTo($permissions);
         $role->delete();
+        app(PermissionRegistrar::class)->forgetCachedPermissions();
 
         if($role){
             return response()->json([

@@ -10,6 +10,13 @@ use Illuminate\Support\Facades\Storage;
 class PramukaController extends Controller
 {
     //
+    public function __construct()
+    {
+        $this->middleware(['permission:pramuka.index|pramukas.index'])->only(['index']);
+        $this->middleware(['permission:pramuka.create|pramukas.create'])->only(['create', 'store']);
+        $this->middleware(['permission:pramuka.edit|pramukas.edit'])->only(['edit', 'update']);
+        $this->middleware(['permission:pramuka.delete|pramukas.delete'])->only(['destroy']);
+    }
 
     public function index()
     {

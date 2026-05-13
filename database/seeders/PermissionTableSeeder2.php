@@ -13,48 +13,92 @@ class PermissionTableSeeder2 extends Seeder
      */
     public function run(): void
     {
-        //otkp
-        Permission::create(['name' => 'o_t_k_p_s.create']);
-        Permission::create(['name' => 'o_t_k_p_s.index']);
-        Permission::create(['name' => 'o_t_k_p_s.edit']);
-        Permission::create(['name' => 'o_t_k_p_s.delete']);
-        
-        //kesiswaan
-        Permission::create(['name' => 'kesiswaan.create']);
-        Permission::create(['name' => 'kesiswaan.index']);
-        Permission::create(['name' => 'kesiswaan.edit']);
-        Permission::create(['name' => 'kesiswaan.delete']);
-        
-        //kurikulum
-        Permission::create(['name' => 'kurikulums.create']);
-        Permission::create(['name' => 'kurikulums.index']);
-        Permission::create(['name' => 'kurikulums.edit']);
-        Permission::create(['name' => 'kurikulums.delete']);
-        
-        //pramuka
-        Permission::create(['name' => 'pramukas.create']);
-        Permission::create(['name' => 'pramukas.index']);
-        Permission::create(['name' => 'pramukas.edit']);
-        Permission::create(['name' => 'pramukas.delete']);
+        $guardName = config('auth.defaults.guard', 'web');
 
-        //Teknik Kendaraan Ringan
-        Permission::create(['name' => 'TeknikKendaraanRingan.create']);
-        Permission::create(['name' => 'TeknikKendaraanRingan.index']);
-        Permission::create(['name' => 'TeknikKendaraanRingan.edit']);
-        Permission::create(['name' => 'TeknikKendaraanRingan.delete']);
+        // Keep legacy permission names (already used in some places) and add
+        // normalized names that match the routes/controllers in this project.
+        $permissions = [
+            // OTKP (legacy + normalized)
+            'o_t_k_p_s.create',
+            'o_t_k_p_s.index',
+            'o_t_k_p_s.edit',
+            'o_t_k_p_s.delete',
+            'otkp.create',
+            'otkp.index',
+            'otkp.edit',
+            'otkp.delete',
 
-        //Teknik Komputer Jaringan
-        Permission::create(['name' => 'TeknikKomputerJaringan.create']);
-        Permission::create(['name' => 'TeknikKomputerJaringan.index']);
-        Permission::create(['name' => 'TeknikKomputerJaringan.edit']);
-        Permission::create(['name' => 'TeknikKomputerJaringan.delete']);
+            // TKJ (legacy + normalized)
+            'TeknikKomputerJaringan.create',
+            'TeknikKomputerJaringan.index',
+            'TeknikKomputerJaringan.edit',
+            'TeknikKomputerJaringan.delete',
+            'tkj.create',
+            'tkj.index',
+            'tkj.edit',
+            'tkj.delete',
 
-        //Teknik Komputer Jaringan
-        Permission::create(['name' => 'TeknikPemesinan.create']);
-        Permission::create(['name' => 'TeknikPemesinan.index']);
-        Permission::create(['name' => 'TeknikPemesinan.edit']);
-        Permission::create(['name' => 'TeknikPemesinan.delete']);
+            // kesiswaan (already normalized)
+            'kesiswaan.create',
+            'kesiswaan.index',
+            'kesiswaan.edit',
+            'kesiswaan.delete',
 
+            // kurikulum (legacy plural + normalized)
+            'kurikulums.create',
+            'kurikulums.index',
+            'kurikulums.edit',
+            'kurikulums.delete',
+            'kurikulum.create',
+            'kurikulum.index',
+            'kurikulum.edit',
+            'kurikulum.delete',
+
+            // pramuka (legacy plural + normalized)
+            'pramukas.create',
+            'pramukas.index',
+            'pramukas.edit',
+            'pramukas.delete',
+            'pramuka.create',
+            'pramuka.index',
+            'pramuka.edit',
+            'pramuka.delete',
+
+            // Other majors (legacy names kept)
+            'TeknikKendaraanRingan.create',
+            'TeknikKendaraanRingan.index',
+            'TeknikKendaraanRingan.edit',
+            'TeknikKendaraanRingan.delete',
+            'TeknikPemesinan.create',
+            'TeknikPemesinan.index',
+            'TeknikPemesinan.edit',
+            'TeknikPemesinan.delete',
+
+            // Keislaman
+            'keislaman.create',
+            'keislaman.index',
+            'keislaman.edit',
+            'keislaman.delete',
+
+            // Hubungan Industri
+            'hubunganindustri.create',
+            'hubunganindustri.index',
+            'hubunganindustri.edit',
+            'hubunganindustri.delete',
+
+            // Sarana & Prasarana
+            'saranaprasarana.create',
+            'saranaprasarana.index',
+            'saranaprasarana.edit',
+            'saranaprasarana.delete',
+        ];
+
+        foreach ($permissions as $name) {
+            Permission::firstOrCreate(
+                ['name' => $name, 'guard_name' => $guardName],
+                ['name' => $name, 'guard_name' => $guardName]
+            );
+        }
 
     }
 }

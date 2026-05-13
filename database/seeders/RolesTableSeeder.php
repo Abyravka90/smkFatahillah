@@ -14,8 +14,10 @@ class RolesTableSeeder extends Seeder
     public function run(): void
     {
         //
-        Role::create([
-            'name' => 'admin'
-        ]);
+        $guardName = config('auth.defaults.guard', 'web');
+        Role::firstOrCreate(
+            ['name' => 'admin', 'guard_name' => $guardName],
+            ['name' => 'admin', 'guard_name' => $guardName]
+        );
     }
 }

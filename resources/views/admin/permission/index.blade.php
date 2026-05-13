@@ -15,6 +15,11 @@
                 </div>
 
                 <div class="card-body">
+                    @can('permissions.create')
+                    <div class="d-flex justify-content-end mb-3">
+                        <a href="{{ route('admin.permission.create') }}" class="btn btn-primary"><i class="fa fa-plus-circle"></i> Tambah</a>
+                    </div>
+                    @endcan
                     <form action="{{ route('admin.permission.index') }}" method="GET">
                         <div class="form-group">
                             <div class="input-group mb-3">

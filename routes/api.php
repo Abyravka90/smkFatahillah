@@ -15,12 +15,17 @@ use App\Http\Controllers\Api\CategoryController;
 use App\Http\Controllers\Api\FasilitasController;
 use App\Http\Controllers\Api\JurusanController;
 use App\Http\Controllers\Api\KesiswaanController;
+use App\Http\Controllers\Api\KeislamanController;
 use App\Http\Controllers\Api\KontributorController;
 use App\Http\Controllers\Api\KurikulumController;
 use App\Http\Controllers\Api\PramukaController;
+use App\Http\Controllers\Api\HubunganIndustriController;
 use App\Http\Controllers\Api\SpmbController;
 use App\Http\Controllers\Api\TKJController;
+use App\Http\Controllers\Api\DocsController;
+use App\Http\Controllers\Api\SaranaPrasaranaController;
 
+Route::get('/openapi', [DocsController::class, 'openapi'])->name('api.openapi');
 
 Route::get('/user', function (Request $request) {
     return $request->user();
@@ -58,6 +63,9 @@ Route::get('/tkj', [TKJController::class, 'index']);
 Route::get('/kesiswaan', [KesiswaanController::class, 'index']);
 Route::get('/kurikulum', [KurikulumController::class, 'index']);
 Route::get('/pramuka', [PramukaController::class, 'index']);
+Route::get('/keislaman', [KeislamanController::class, 'index']);
+Route::get('/hubungan-industri', [HubunganIndustriController::class, 'index']);
+Route::get('/sarana-prasarana', [SaranaPrasaranaController::class, 'index']);
 
 Route::get('/kontributor/{id}', [KontributorController::class, 'show']);
 Route::get('/kontributor/detail/{id}', [KontributorController::class, 'detail']);

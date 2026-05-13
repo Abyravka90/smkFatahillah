@@ -1,11 +1,11 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="id">
 
 <head>
     <meta charset="UTF-8">
     <meta content="width=device-width, initial-scale=1, maximum-scale=1, shrink-to-fit=no" name="viewport">
     <meta name="csrf-token" content="{{ csrf_token() }}">
-    <title>Dashboard &mdash; SMK Fatahillah Cileungsi</title>
+    <title>@yield('title', 'Dashboard') &mdash; SMK Fatahillah Cileungsi</title>
     <link rel="shortcut icon" href="{{ asset('assets/img/school.svg') }}" type="image/x-icon">
     <!-- General CSS Files -->
     <link rel="stylesheet" href="{{ asset('assets/modules/bootstrap/css/bootstrap.min.css') }}">
@@ -36,12 +36,12 @@
                     </ul>
                 </form>
                 <ul class="navbar-nav navbar-right">
-
+                    @auth
                     <li class="dropdown"><a href="#" data-toggle="dropdown"
                             class="nav-link dropdown-toggle nav-link-lg nav-link-user">
                             <img alt="image" src="{{ asset('assets/img/avatar/avatar-1.png') }}"
                                 class="rounded-circle mr-1">
-                            <div class="d-sm-none d-lg-inline-block">Hi, {{ auth()->user()->name }}</div>
+                            <div class="d-sm-none d-lg-inline-block">Hi, {{ auth()->user()?->name }}</div>
                         </a>
                         <div class="dropdown-menu dropdown-menu-right">
                             <a href="{{ route('logout') }}" style="cursor: pointer" onclick="event.preventDefault();
@@ -54,6 +54,7 @@
                             </form>
                         </div>
                     </li>
+                    @endauth
                 </ul>
             </nav>
             <div class="main-sidebar sidebar-style-2">
@@ -74,22 +75,30 @@
                                 href="{{ route('admin.post.index') }}"><i class="fas fa-book-open"></i>
                                 <span>Berita</span></a></li>
                         @endcan
-
-                        @if (auth()->user()->name == 'Manajemen Perkantoran')
+                        @canany(['otkp.index', 'o_t_k_p_s.index'])
                             <li class="{{ setActive('admin/otkp') }}"><a class="nav-link" href="{{ route('admin.otkp.index') }}"><i class="fas fa-book-open"></i><span>Pages</span></a></li>
-                        @endif
-                        @if (auth()->user()->name == 'Teknik Komputer Jaringan')
+                        @endcanany
+                        @canany(['tkj.index', 'TeknikKomputerJaringan.index'])
                             <li class="{{ setActive('admin/tkj') }}"><a class="nav-link" href="{{ route('admin.tkj.index') }}"><i class="fas fa-book-open"></i><span>Pages</span></a></li>
-                        @endif
-                        @if (auth()->user()->name == 'Kesiswaan')
+                        @endcanany
+                        @can('kesiswaan.index')
                             <li class="{{ setActive('admin/kesiswaan') }}"><a class="nav-link" href="{{ route('admin.kesiswaan.index') }}"><i class="fas fa-book-open"></i><span>Pages</span></a></li>
-                        @endif
-                        @if (auth()->user()->name == 'Kurikulum')
+                        @endcan
+                        @canany(['kurikulum.index', 'kurikulums.index'])
                             <li class="{{ setActive('admin/kurikulum') }}"><a class="nav-link" href="{{ route('admin.kurikulum.index') }}"><i class="fas fa-book-open"></i><span>Pages</span></a></li>
-                        @endif
-                        @if (auth()->user()->name == 'Pramuka')
-                            <li class="{{ setActive('admin/pramuka') }}"><a class="nav-link" href="{{ route('admin.pramuka.index') }}"><i class="fas fa-book-open"></i><span>Pages</span></a></li>                            
-                        @endif
+                        @endcanany
+                        @canany(['pramuka.index', 'pramukas.index'])
+                            <li class="{{ setActive('admin/pramuka') }}"><a class="nav-link" href="{{ route('admin.pramuka.index') }}"><i class="fas fa-book-open"></i><span>Pages</span></a></li>
+                        @endcanany
+                        @can('keislaman.index')
+                            <li class="{{ setActive('admin/keislaman') }}"><a class="nav-link" href="{{ route('admin.keislaman.index') }}"><i class="fas fa-book-open"></i><span>Keislaman</span></a></li>
+                        @endcan
+                        @can('hubunganindustri.index')
+                            <li class="{{ setActive('admin/hubunganindustri') }}"><a class="nav-link" href="{{ route('admin.hubunganindustri.index') }}"><i class="fas fa-book-open"></i><span>Hubungan Industri</span></a></li>
+                        @endcan
+                        @can('saranaprasarana.index')
+                            <li class="{{ setActive('admin/saranaprasarana') }}"><a class="nav-link" href="{{ route('admin.saranaprasarana.index') }}"><i class="fas fa-book-open"></i><span>Sarana & Prasarana</span></a></li>
+                        @endcan
 
                         <li class="{{ setActive('admin/kontributor') }}"><a class="nav-link"
                                 href="{{ route('admin.kontributor.index') }}"><i class="fas fa-book-open"></i>
@@ -118,7 +127,7 @@
                                 <span>Jurusan</span></a></li>
                         @endcan
 
-                        @if(auth()->user()->can('photos.index') || auth()->user()->can('videos.index'))
+                        @if(auth()->check() && (auth()->user()->can('photos.index') || auth()->user()->can('videos.index')))
                         <li class="menu-header">GALERI</li>
                         @endif
                         
@@ -144,7 +153,7 @@
                                 <span>Video</span></a></li>
                         @endcan
 
-                        @if(auth()->user()->can('roles.index') || auth()->user()->can('permissions.index') || auth()->user()->can('users.index'))
+                        @if(auth()->check() && (auth()->user()->can('roles.index') || auth()->user()->can('permissions.index') || auth()->user()->can('users.index')))
                         <li class="menu-header">PENGATURAN</li>
                         @endif
                         
@@ -166,7 +175,7 @@
 
                         <li
                             class="dropdown {{ setActive('admin/role'). setActive('admin/permission'). setActive('admin/user') }}">
-                            @if(auth()->user()->can('roles.index') || auth()->user()->can('permissions.index') || auth()->user()->can('users.index'))
+                            @if(auth()->check() && (auth()->user()->can('roles.index') || auth()->user()->can('permissions.index') || auth()->user()->can('users.index')))
                                 <a href="#" class="nav-link has-dropdown"><i class="fas fa-users"></i><span>Users
                                 Management</span></a>
                             @endif
@@ -200,7 +209,7 @@
 
             <footer class="main-footer">
                 <div class="footer-left">
-                    Copyright &copy; 2025 <div class="bullet"></div> SMK Fatahillah Cileungsi <div class="bullet"></div> All Rights
+                    Copyright &copy; {{ now()->year }} <div class="bullet"></div> SMK Fatahillah Cileungsi <div class="bullet"></div> All Rights
                     Reserved.
                 </div>
                 <div class="footer-right">

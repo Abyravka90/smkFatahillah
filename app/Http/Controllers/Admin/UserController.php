@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Spatie\Permission\Models\Role;
+use Spatie\Permission\PermissionRegistrar;
 
 class UserController extends Controller
 {
@@ -44,6 +45,7 @@ class UserController extends Controller
         ]);
 
         $user->assignRole($request->input('roles'));
+        app(PermissionRegistrar::class)->forgetCachedPermissions();
 
         if($user){
             return redirect()->route('admin.user.index')->with(['success' => 'Data Berhasil Disimpan']);
@@ -79,6 +81,7 @@ class UserController extends Controller
         }
 
         $user->syncRoles($request->input('roles'));
+        app(PermissionRegistrar::class)->forgetCachedPermissions();
 
         if($user){
             return redirect()->route('admin.user.index')->with(['success' => 'Data Berhasil Diupdate']);

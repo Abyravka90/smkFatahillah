@@ -18,15 +18,20 @@ use App\Http\Controllers\Admin\DashboardController;
 use App\Http\Controllers\Admin\FasilitasController;
 use App\Http\Controllers\Admin\JurusanController;
 use App\Http\Controllers\Admin\KesiswaanController;
+use App\Http\Controllers\Admin\KeislamanController;
 use App\Http\Controllers\Admin\KontributorController;
 use App\Http\Controllers\Admin\KurikulumController;
+use App\Http\Controllers\Admin\HubunganIndustriController;
 use App\Http\Controllers\Admin\OTKPController;
 use App\Http\Controllers\Admin\PermissionController;
 use App\Http\Controllers\Admin\PramukaController;
+use App\Http\Controllers\Admin\SaranaPrasaranaController;
 use App\Http\Controllers\Admin\SpmbController;
 use App\Http\Controllers\Admin\TKJController;
+use App\Http\Controllers\Api\DocsController;
 
 Route::get('/', [LoginController::class, 'showLoginForm']);
+Route::get('/docs/api', [DocsController::class, 'ui'])->name('docs.api');
 
 Auth::routes(['register' => false]);
 
@@ -40,7 +45,7 @@ Route::prefix('admin')->group(function(){
             '/permission',
             PermissionController::class,
             [
-                'except' => ['show', 'create', 'edit', 'update', 'delete'], 
+                'except' => ['show', 'edit', 'update', 'delete'],
                 'as' => 'admin'
             ]
         );
@@ -145,6 +150,24 @@ Route::prefix('admin')->group(function(){
         ]);
         
         Route::resource('/kurikulum', KurikulumController::class,
+        [
+            'except' => ['show'],
+            'as' => 'admin'
+        ]);
+
+        Route::resource('/keislaman', KeislamanController::class,
+        [
+            'except' => ['show'],
+            'as' => 'admin'
+        ]);
+
+        Route::resource('/hubunganindustri', HubunganIndustriController::class,
+        [
+            'except' => ['show'],
+            'as' => 'admin'
+        ]);
+
+        Route::resource('/saranaprasarana', SaranaPrasaranaController::class,
         [
             'except' => ['show'],
             'as' => 'admin'

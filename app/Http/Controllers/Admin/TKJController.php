@@ -10,6 +10,14 @@ use App\Models\TeknikKomputerJaringan;
 
 class TKJController extends Controller
 {
+    public function __construct()
+    {
+        $this->middleware(['permission:tkj.index|TeknikKomputerJaringan.index'])->only(['index']);
+        $this->middleware(['permission:tkj.create|TeknikKomputerJaringan.create'])->only(['create', 'store']);
+        $this->middleware(['permission:tkj.edit|TeknikKomputerJaringan.edit'])->only(['edit', 'update']);
+        $this->middleware(['permission:tkj.delete|TeknikKomputerJaringan.delete'])->only(['destroy']);
+    }
+
     /**
      * Display a listing of the resource.
      */

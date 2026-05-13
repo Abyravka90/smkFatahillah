@@ -10,6 +10,14 @@ use Illuminate\Support\Facades\Storage;
 
 class OTKPController extends Controller
 {
+    public function __construct()
+    {
+        $this->middleware(['permission:otkp.index|o_t_k_p_s.index'])->only(['index']);
+        $this->middleware(['permission:otkp.create|o_t_k_p_s.create'])->only(['create', 'store']);
+        $this->middleware(['permission:otkp.edit|o_t_k_p_s.edit'])->only(['edit', 'update']);
+        $this->middleware(['permission:otkp.delete|o_t_k_p_s.delete'])->only(['destroy']);
+    }
+
     /**
      * Display a listing of the resource.
      */

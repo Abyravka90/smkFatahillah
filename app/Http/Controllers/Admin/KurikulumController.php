@@ -9,6 +9,14 @@ use Illuminate\Support\Facades\Storage;
 
 class KurikulumController extends Controller
 {
+    public function __construct()
+    {
+        $this->middleware(['permission:kurikulum.index|kurikulums.index'])->only(['index']);
+        $this->middleware(['permission:kurikulum.create|kurikulums.create'])->only(['create', 'store']);
+        $this->middleware(['permission:kurikulum.edit|kurikulums.edit'])->only(['edit', 'update']);
+        $this->middleware(['permission:kurikulum.delete|kurikulums.delete'])->only(['destroy']);
+    }
+
     /**
      * Display a listing of the resource.
      */
