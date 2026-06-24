@@ -77,6 +77,8 @@
               </div>
             </div>
 
+            @include('admin.partials.division-create-uploads')
+
             <div class="text-right">
               <a href="{{ route('admin.otkp.index') }}" class="btn btn-secondary">Batal</a>
               <button type="submit" class="btn btn-primary">

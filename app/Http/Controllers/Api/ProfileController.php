@@ -4,26 +4,26 @@ namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
 use App\Models\Profile;
-use Illuminate\Http\Request;
 
 class ProfileController extends Controller
 {
     //
-    public function index(){
+    public function index()
+    {
         $profile = Profile::latest()->first();
-        if($profile){
+        if ($profile) {
             return response()->json([
                 'response' => [
-                    'status' => 200, 
-                    'message' => 'List Data Profile'
-                ], 'data' => $profile
-            ],200);  
-        }else{
+                    'status' => 200,
+                    'message' => 'List Data Profile',
+                ], 'data' => $profile,
+            ], 200);
+        } else {
             return response()->json([
                 'response' => [
                     'status' => 404,
-                    'message' => 'Data Not Found'
-                ], 'data' => null
+                    'message' => 'Data Not Found',
+                ], 'data' => null,
             ], 404);
         }
     }

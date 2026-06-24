@@ -1,5 +1,6 @@
 <?php
 
+use Carbon\Carbon;
 use Illuminate\Support\Facades\Request;
 
 if (! function_exists('setActive')) {
@@ -12,7 +13,7 @@ if (! function_exists('setActive')) {
 if (! function_exists('TanggalID')) {
     function TanggalID($tanggal)
     {
-        $value = \Carbon\Carbon::parse($tanggal)->locale('id');
+        $value = Carbon::parse($tanggal)->locale('id');
 
         return $value->translatedFormat('l, d F Y');
     }

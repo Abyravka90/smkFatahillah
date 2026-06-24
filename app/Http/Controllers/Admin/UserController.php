@@ -11,28 +11,33 @@ use Spatie\Permission\PermissionRegistrar;
 class UserController extends Controller
 {
     //
-    public function __construct(){
+    public function __construct()
+    {
         $this->middleware('permission:users.index')->only('index');
         $this->middleware('permission:users.create')->only('create', 'store');
         $this->middleware('permission:users.edit')->only('edit', 'update');
         $this->middleware('permission:users.delete')->only('destroy');
     }
 
-    public function index(){
-        $users = User::latest()->when(request()->q, function($users){ 
+    public function index()
+    {
+        $users = User::latest()->when(request()->q, function ($users) {
             $users = $users->where('name', 'like', '%'.request()->q.'%');
-        } )->paginate(10);
+        })->paginate(10);
 
         return view('admin.user.index', compact('users'));
     }
 
-    public function create(){
+    public function create()
+    {
         $roles = Role::latest()->get();
+
         return view('admin.user.create', compact('roles'));
     }
 
-    public function store(Request $request){
-        $this->validate($request,[
+    public function store(Request $request)
+    {
+        $this->validate($request, [
             'name' => 'required',
             'email' => 'required|email|unique:users',
             'password' => 'required|confirmed',
@@ -41,25 +46,28 @@ class UserController extends Controller
         $user = User::create([
             'name' => $request->input('name'),
             'email' => $request->input('email'),
-            'password' => bcrypt($request->input('password'))
+            'password' => bcrypt($request->input('password')),
         ]);
 
         $user->assignRole($request->input('roles'));
         app(PermissionRegistrar::class)->forgetCachedPermissions();
 
-        if($user){
+        if ($user) {
             return redirect()->route('admin.user.index')->with(['success' => 'Data Berhasil Disimpan']);
-        }else{
+        } else {
             return redirect()->route('admin.user.index')->with(['error' => 'Data Gagal Disimpan']);
         }
     }
 
-    public function edit(User $user){
+    public function edit(User $user)
+    {
         $roles = Role::latest()->get();
+
         return view('admin.user.edit', compact('user', 'roles'));
     }
 
-    public function update(Request $request, User $user){
+    public function update(Request $request, User $user)
+    {
         $this->validate($request, [
             'name' => 'required',
             'email' => 'required|email|unique:users,email,'.$user->id,
@@ -67,12 +75,12 @@ class UserController extends Controller
 
         $user = User::findOrFail($user->id);
 
-        if($request->input('password') == ''){
+        if ($request->input('password') == '') {
             $user->update([
                 'name' => $request->input('name'),
-                'email' => $request->input('email')
+                'email' => $request->input('email'),
             ]);
-        }else{
+        } else {
             $user->update([
                 'name' => $request->input('name'),
                 'email' => $request->input('email'),
@@ -83,26 +91,26 @@ class UserController extends Controller
         $user->syncRoles($request->input('roles'));
         app(PermissionRegistrar::class)->forgetCachedPermissions();
 
-        if($user){
+        if ($user) {
             return redirect()->route('admin.user.index')->with(['success' => 'Data Berhasil Diupdate']);
         } else {
             return redirect()->route('admin.user.index')->with(['error' => 'Data Gagal Diupdate']);
         }
     }
 
-    public function destroy($id){
+    public function destroy($id)
+    {
         $user = User::findOrFail($id);
         $user->delete();
 
-        if($user){
+        if ($user) {
             return response()->json([
-                'status' => 'success'
+                'status' => 'success',
             ]);
         } else {
-                        return response()->json([
-                'status' => 'error'
+            return response()->json([
+                'status' => 'error',
             ]);
         }
     }
-
 }

@@ -2,13 +2,17 @@
 
 namespace App\Http\Controllers\Admin;
 
+use App\Http\Controllers\Admin\Concerns\HandlesDivisionUploads;
 use App\Http\Controllers\Controller;
 use App\Models\SaranaPrasarana;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Storage;
 
 class SaranaPrasaranaController extends Controller
 {
+    use HandlesDivisionUploads;
+
+    private string $folder = 'sarana_prasarana';
+
     public function __construct()
     {
         $this->middleware(['permission:saranaprasarana.index'])->only(['index']);
@@ -19,7 +23,7 @@ class SaranaPrasaranaController extends Controller
 
     public function index()
     {
-        $saranaPrasaranas = SaranaPrasarana::latest()->paginate(1);
+        $saranaPrasaranas = SaranaPrasarana::with('documents')->latest()->paginate(1);
         $cek_saranaprasarana = SaranaPrasarana::count();
 
         return view('admin.saranaprasarana.index', compact('saranaPrasaranas', 'cek_saranaprasarana'));
@@ -32,24 +36,10 @@ class SaranaPrasaranaController extends Controller
 
     public function store(Request $request)
     {
-        $this->validate($request, [
-            'name' => 'required',
-            'content' => 'required',
-            'image' => 'nullable|image',
-        ]);
+        $this->validate($request, $this->divisionRules());
 
-        $data = [
-            'name' => $request->input('name'),
-            'content' => $request->input('content'),
-        ];
-
-        if ($request->hasFile('image')) {
-            $image = $request->file('image');
-            $image->storeAs('sarana_prasarana', $image->hashName(), 'public');
-            $data['image'] = $image->hashName();
-        }
-
-        $saranaPrasarana = SaranaPrasarana::create($data);
+        $saranaPrasarana = SaranaPrasarana::create($this->storeDivisionData($request, $this->folder));
+        $this->storeDivisionDocuments($request, $saranaPrasarana, $this->folder);
 
         if ($saranaPrasarana) {
             return redirect()->route('admin.saranaprasarana.index')->with(['success' => 'Data Berhasil Ditambahkan']);
@@ -60,33 +50,17 @@ class SaranaPrasaranaController extends Controller
 
     public function edit(SaranaPrasarana $saranaprasarana)
     {
+        $saranaprasarana->load('documents');
+
         return view('admin.saranaprasarana.edit', ['saranaprasarana' => $saranaprasarana]);
     }
 
     public function update(Request $request, SaranaPrasarana $saranaprasarana)
     {
-        $this->validate($request, [
-            'name' => 'required',
-            'content' => 'required',
-            'image' => 'nullable|image',
-        ]);
+        $this->validate($request, $this->divisionRules());
 
-        $data = [
-            'name' => $request->input('name'),
-            'content' => $request->input('content'),
-        ];
-
-        if ($request->hasFile('image')) {
-            if ($saranaprasarana->getRawOriginal('image')) {
-                Storage::disk('public')->delete('sarana_prasarana/' . basename($saranaprasarana->getRawOriginal('image')));
-            }
-
-            $image = $request->file('image');
-            $image->storeAs('sarana_prasarana', $image->hashName(), 'public');
-            $data['image'] = $image->hashName();
-        }
-
-        $saranaprasarana->update($data);
+        $saranaprasarana->update($this->updateDivisionData($request, $saranaprasarana, $this->folder));
+        $this->storeDivisionDocuments($request, $saranaprasarana, $this->folder);
 
         if ($saranaprasarana) {
             return redirect()->route('admin.saranaprasarana.index')->with(['success' => 'Data Berhasil Diupdate']);
@@ -97,23 +71,14 @@ class SaranaPrasaranaController extends Controller
 
     public function destroy(string $id)
     {
-        $saranaprasarana = SaranaPrasarana::findOrFail($id);
-
-        if ($saranaprasarana->getRawOriginal('image')) {
-            Storage::disk('public')->delete('sarana_prasarana/' . basename($saranaprasarana->getRawOriginal('image')));
-        }
-
+        $saranaprasarana = SaranaPrasarana::with('documents')->findOrFail($id);
+        $this->deleteDivisionFiles($saranaprasarana, $this->folder);
         $saranaprasarana->delete();
 
         if ($saranaprasarana) {
-            return response()->json([
-                'status' => 'success',
-            ]);
+            return response()->json(['status' => 'success']);
         }
 
-        return response()->json([
-            'status' => 'error',
-        ]);
+        return response()->json(['status' => 'error']);
     }
 }
-

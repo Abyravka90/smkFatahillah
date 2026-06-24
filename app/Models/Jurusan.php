@@ -8,5 +8,4 @@ class Jurusan extends Model
 {
     //
     protected $guarded = [];
-
 }

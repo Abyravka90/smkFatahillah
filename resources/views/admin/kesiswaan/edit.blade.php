@@ -94,6 +94,8 @@
               </small>
             </div>
 
+            @include('admin.partials.division-edit-uploads', ['item' => $kesiswaan])
+
             <div class="text-right">
               <a href="{{ route('admin.kesiswaan.index') }}" class="btn btn-secondary">Batal</a>
               <button type="submit" class="btn btn-primary">
@@ -156,4 +158,5 @@
     }
   })();
 </script>
+@include('admin.partials.division-document-script')
 @endsection

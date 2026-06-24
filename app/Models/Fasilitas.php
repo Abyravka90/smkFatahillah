@@ -10,11 +10,13 @@ class Fasilitas extends Model
 {
     //
     use HasFactory;
+
     protected $guarded = [];
 
-    public function image() :Attribute{
-       return  Attribute::make(
-            get:fn($value)=> url('/storage/fasilitas/'.$value),
+    public function image(): Attribute
+    {
+        return Attribute::make(
+            get: fn ($value) => url('/storage/fasilitas/'.$value),
         );
     }
 }

@@ -11,18 +11,23 @@ use Illuminate\Support\Facades\Storage;
 class KontributorController extends Controller
 {
     //
-    public function index(){
+    public function index()
+    {
         $kontributors = Kontributor::with('jurusan')->latest()->paginate(10);
         $jurusans = Jurusan::all();
+
         return view(('admin.kontributor.index'), compact('kontributors'));
     }
 
-    public function create(){
+    public function create()
+    {
         $jurusans = Jurusan::all();
+
         return view('admin.kontributor.create', compact('jurusans'));
     }
 
-    public function store(Request $request){
+    public function store(Request $request)
+    {
         $this->validate($request, [
             'image_1' => 'image',
             'image_2' => 'image',
@@ -48,20 +53,23 @@ class KontributorController extends Controller
             'jurusan_id' => $request->input('jurusan_id'),
         ]);
 
-        if($kontributor){
+        if ($kontributor) {
             return redirect()->route('admin.kontributor.index')->with(['success' => 'Data Berhasil Ditambahkan']);
         } else {
             return redirect()->route('admin.kontributor.index')->with(['error' => 'Data Gagal Ditambahkan']);
         }
     }
 
-    public function edit(Kontributor $kontributor){
+    public function edit(Kontributor $kontributor)
+    {
         $jurusans = Jurusan::all();
+
         return view(('admin.kontributor.edit'), compact('kontributor', 'jurusans'));
     }
 
-    public function update(Request $request, Kontributor $kontributor){
-        $this->validate($request,[
+    public function update(Request $request, Kontributor $kontributor)
+    {
+        $this->validate($request, [
             'image_1' => 'image',
             'image_2' => 'image',
             'image_3' => 'image',
@@ -70,19 +78,19 @@ class KontributorController extends Controller
             'jurusan_id' => 'required|exists:jurusans,id',
         ]);
 
-        if($request->hasFile('image_1')){
+        if ($request->hasFile('image_1')) {
             $image_1 = $request->file('image_1');
             $image_1->storeAs('kontributor/image_1', $image_1->hashName(), 'public');
             $kontributor->image_1 = $image_1->hashName();
         }
 
-        if($request->hasFile('image_2')){
+        if ($request->hasFile('image_2')) {
             $image_2 = $request->file('image_2');
             $image_2->storeAs('kontributor/image_2', $image_2->hashName(), 'public');
             $kontributor->image_2 = $image_2->hashName();
         }
 
-        if($request->hasFile('image_3')){
+        if ($request->hasFile('image_3')) {
             $image_3 = $request->file('image_3');
             $image_3->storeAs('kontributor/image_3', $image_3->hashName(), 'public');
             $kontributor->image_3 = $image_3->hashName();
@@ -96,19 +104,20 @@ class KontributorController extends Controller
         return redirect()->route('admin.kontributor.index')->with(['success' => 'Data Berhasil Diupdate']);
     }
 
-    public function destroy($id){
+    public function destroy($id)
+    {
         $kontributor = Kontributor::findOrFail($id);
         Storage::disk('public')->delete('kontributor/image_1/'.basename($kontributor->image_1));
         Storage::disk('public')->delete('kontributor/image_2/'.basename($kontributor->image_2));
         Storage::disk('public')->delete('kontributor/image_3'.basename($kontributor->image_3));
         $kontributor->delete();
-        if($kontributor){
+        if ($kontributor) {
             return response()->json([
-                'status' => 'success'
+                'status' => 'success',
             ]);
         } else {
             return response()->json([
-                'status' => 'error'
+                'status' => 'error',
             ]);
         }
     }

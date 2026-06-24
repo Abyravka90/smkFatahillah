@@ -10,9 +10,10 @@ class Profile extends Model
     //
     protected $guarded = [];
 
-    public function image(): Attribute{
+    public function image(): Attribute
+    {
         return Attribute::make(
-            get:fn($value)=>url('storage/profile/'.$value),
+            get: fn ($value) => url('storage/profile/'.$value),
         );
     }
 }

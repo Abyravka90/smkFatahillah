@@ -22,7 +22,7 @@ return new class extends Migration
         });
         // pivot table post
 
-        Schema::create('post_tag', function(Blueprint $table){
+        Schema::create('post_tag', function (Blueprint $table) {
             $table->integer('post_id');
             $table->integer('tag_id');
         });

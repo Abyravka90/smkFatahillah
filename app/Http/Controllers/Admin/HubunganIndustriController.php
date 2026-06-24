@@ -2,13 +2,17 @@
 
 namespace App\Http\Controllers\Admin;
 
+use App\Http\Controllers\Admin\Concerns\HandlesDivisionUploads;
 use App\Http\Controllers\Controller;
 use App\Models\HubunganIndustri;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Storage;
 
 class HubunganIndustriController extends Controller
 {
+    use HandlesDivisionUploads;
+
+    private string $folder = 'hubungan_industri';
+
     public function __construct()
     {
         $this->middleware(['permission:hubunganindustri.index'])->only(['index']);
@@ -19,7 +23,7 @@ class HubunganIndustriController extends Controller
 
     public function index()
     {
-        $hubunganIndustris = HubunganIndustri::latest()->paginate(1);
+        $hubunganIndustris = HubunganIndustri::with('documents')->latest()->paginate(1);
         $cek_hubunganindustri = HubunganIndustri::count();
 
         return view('admin.hubunganindustri.index', compact('hubunganIndustris', 'cek_hubunganindustri'));
@@ -32,24 +36,10 @@ class HubunganIndustriController extends Controller
 
     public function store(Request $request)
     {
-        $this->validate($request, [
-            'name' => 'required',
-            'content' => 'required',
-            'image' => 'nullable|image',
-        ]);
+        $this->validate($request, $this->divisionRules());
 
-        $data = [
-            'name' => $request->input('name'),
-            'content' => $request->input('content'),
-        ];
-
-        if ($request->hasFile('image')) {
-            $image = $request->file('image');
-            $image->storeAs('hubungan_industri', $image->hashName(), 'public');
-            $data['image'] = $image->hashName();
-        }
-
-        $hubunganIndustri = HubunganIndustri::create($data);
+        $hubunganIndustri = HubunganIndustri::create($this->storeDivisionData($request, $this->folder));
+        $this->storeDivisionDocuments($request, $hubunganIndustri, $this->folder);
 
         if ($hubunganIndustri) {
             return redirect()->route('admin.hubunganindustri.index')->with(['success' => 'Data Berhasil Ditambahkan']);
@@ -60,33 +50,17 @@ class HubunganIndustriController extends Controller
 
     public function edit(HubunganIndustri $hubunganindustri)
     {
+        $hubunganindustri->load('documents');
+
         return view('admin.hubunganindustri.edit', ['hubunganindustri' => $hubunganindustri]);
     }
 
     public function update(Request $request, HubunganIndustri $hubunganindustri)
     {
-        $this->validate($request, [
-            'name' => 'required',
-            'content' => 'required',
-            'image' => 'nullable|image',
-        ]);
+        $this->validate($request, $this->divisionRules());
 
-        $data = [
-            'name' => $request->input('name'),
-            'content' => $request->input('content'),
-        ];
-
-        if ($request->hasFile('image')) {
-            if ($hubunganindustri->getRawOriginal('image')) {
-                Storage::disk('public')->delete('hubungan_industri/' . basename($hubunganindustri->getRawOriginal('image')));
-            }
-
-            $image = $request->file('image');
-            $image->storeAs('hubungan_industri', $image->hashName(), 'public');
-            $data['image'] = $image->hashName();
-        }
-
-        $hubunganindustri->update($data);
+        $hubunganindustri->update($this->updateDivisionData($request, $hubunganindustri, $this->folder));
+        $this->storeDivisionDocuments($request, $hubunganindustri, $this->folder);
 
         if ($hubunganindustri) {
             return redirect()->route('admin.hubunganindustri.index')->with(['success' => 'Data Berhasil Diupdate']);
@@ -97,23 +71,14 @@ class HubunganIndustriController extends Controller
 
     public function destroy(string $id)
     {
-        $hubunganindustri = HubunganIndustri::findOrFail($id);
-
-        if ($hubunganindustri->getRawOriginal('image')) {
-            Storage::disk('public')->delete('hubungan_industri/' . basename($hubunganindustri->getRawOriginal('image')));
-        }
-
+        $hubunganindustri = HubunganIndustri::with('documents')->findOrFail($id);
+        $this->deleteDivisionFiles($hubunganindustri, $this->folder);
         $hubunganindustri->delete();
 
         if ($hubunganindustri) {
-            return response()->json([
-                'status' => 'success',
-            ]);
+            return response()->json(['status' => 'success']);
         }
 
-        return response()->json([
-            'status' => 'error',
-        ]);
+        return response()->json(['status' => 'error']);
     }
 }
-

@@ -2,14 +2,17 @@
 
 namespace App\Http\Controllers\Admin;
 
+use App\Http\Controllers\Admin\Concerns\HandlesDivisionUploads;
 use App\Http\Controllers\Controller;
 use App\Models\Pramuka;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Storage;
 
 class PramukaController extends Controller
 {
-    //
+    use HandlesDivisionUploads;
+
+    private string $folder = 'pramuka';
+
     public function __construct()
     {
         $this->middleware(['permission:pramuka.index|pramukas.index'])->only(['index']);
@@ -20,8 +23,9 @@ class PramukaController extends Controller
 
     public function index()
     {
-        $pramukas = Pramuka::latest()->paginate(1);
+        $pramukas = Pramuka::with('documents')->latest()->paginate(1);
         $cek_pramuka = Pramuka::count();
+
         return view('admin.pramuka.index', compact('pramukas', 'cek_pramuka'));
     }
 
@@ -32,90 +36,49 @@ class PramukaController extends Controller
 
     public function store(Request $request)
     {
-        $this->validate($request,[
-            'image' => 'image',
-            'name' => 'required',
-            'content' => 'required',
-        ]);
+        $this->validate($request, $this->divisionRules());
 
-        if($request->has('image')){
-            $image = $request->file('image');
-            $image->storeAs('pramuka', $image->hashName(),'public');
-            $pramukas = Pramuka::create([
-                'name' => $request->input('name'),
-                'content' => $request->input('content'),
-                'image' => $image->hashName(),
-            ]);
-        }else{
-            $pramukas = Pramuka::create([
-                'name' => $request->input('name'),
-                'content' => $request->input('content'),
-            ]);
-        }
+        $pramuka = Pramuka::create($this->storeDivisionData($request, $this->folder));
+        $this->storeDivisionDocuments($request, $pramuka, $this->folder);
 
-        if($pramukas){
+        if ($pramuka) {
             return redirect()->route('admin.pramuka.index')->with('success', 'Data Berhasil Ditambahkan');
-        }else{
-            return redirect()->route('admin.pramuka.index')->with('error', 'Data gagal Ditambahkan');
         }
+
+        return redirect()->route('admin.pramuka.index')->with('error', 'Data gagal Ditambahkan');
     }
 
     public function edit(Pramuka $pramuka)
     {
+        $pramuka->load('documents');
+
         return view('admin.pramuka.edit', compact('pramuka'));
     }
 
     public function update(Request $request, Pramuka $pramuka)
     {
-        $this->validate($request, [
-            'name' => 'required',
-            'content' => 'required',
-            'image' => 'nullable|image',
-        ]);
+        $this->validate($request, $this->divisionRules());
 
-        if($request->file('image') == ''){
-            $pramuka->update([
-                'name' => $request->input('name'),
-                'content' => $request->input('content'),
-            ]);
-        }else{
-            Storage::disk('public')->delete('pramuka/'.$pramuka->image);
+        $pramuka->update($this->updateDivisionData($request, $pramuka, $this->folder));
+        $this->storeDivisionDocuments($request, $pramuka, $this->folder);
 
-            $image= $request->file('image');
-            $image->storeAs('pramuka', $image->hashName(), 'public');
-
-            $pramuka->update([
-                'name' => $request->input('name'),
-                'content' => $request->input('content'),
-                'image' => $image->hashName(),
-            ]);
-
-            if($pramuka){
-                return redirect()->route('admin.pramuka.index')->with('success', 'Data Berhasil Ditambahkan');
-            }else{
-                return redirect()->route('admin.pramuka.index')->with('error', 'Data Gagal Ditambahkan');
-            }
+        if ($pramuka) {
+            return redirect()->route('admin.pramuka.index')->with('success', 'Data Berhasil Diupdate');
         }
+
+        return redirect()->route('admin.pramuka.index')->with('error', 'Data Gagal Diupdate');
     }
 
     public function destroy(string $id)
     {
-        $pramuka = Pramuka::findOrFail($id);
-        if($pramuka->image){
-            Storage::disk('public')->delete('pramuka/'.basename($pramuka->image));
-        }
+        $pramuka = Pramuka::with('documents')->findOrFail($id);
+        $this->deleteDivisionFiles($pramuka, $this->folder);
         $pramuka->delete();
-        if($pramuka){
-            return response()->json([
-                'status' => 'success'
-            ]);
-        }else{
-            return response()->json([
-                'status' => 'error'
-            ]);
+
+        if ($pramuka) {
+            return response()->json(['status' => 'success']);
         }
-        
+
+        return response()->json(['status' => 'error']);
     }
-
-
 }

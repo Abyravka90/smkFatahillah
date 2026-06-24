@@ -7,10 +7,111 @@ use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Illuminate\Routing\Route as LaravelRoute;
 use Illuminate\Support\Arr;
+use Illuminate\View\View;
 
 class DocsController extends Controller
 {
-    public function ui(): \Illuminate\View\View
+    private const SCHEMAS = [
+        'Division' => [
+            'type' => 'object',
+            'properties' => [
+                'id' => ['type' => 'integer'],
+                'name' => ['type' => 'string'],
+                'content' => ['type' => 'string'],
+                'image' => ['type' => 'string', 'nullable' => true, 'description' => 'URL thumbnail konten'],
+                'profile_photo' => ['type' => 'string', 'nullable' => true, 'description' => 'URL foto profil bidang'],
+                'created_at' => ['type' => 'string', 'format' => 'date-time'],
+                'updated_at' => ['type' => 'string', 'format' => 'date-time'],
+                'documents' => [
+                    'type' => 'array',
+                    'description' => 'Daftar dokumen bidang',
+                    'items' => ['$ref' => '#/components/schemas/DivisionDocument'],
+                ],
+            ],
+        ],
+        'DivisionDocument' => [
+            'type' => 'object',
+            'properties' => [
+                'id' => ['type' => 'integer'],
+                'documentable_type' => ['type' => 'string'],
+                'documentable_id' => ['type' => 'integer'],
+                'folder' => ['type' => 'string'],
+                'filename' => ['type' => 'string', 'description' => 'Nama file di storage'],
+                'original_name' => ['type' => 'string', 'description' => 'Nama file asli saat diupload'],
+                'mime_type' => ['type' => 'string', 'nullable' => true],
+                'size' => ['type' => 'integer', 'description' => 'Ukuran file dalam bytes'],
+                'file' => ['type' => 'string', 'description' => 'URL download dokumen'],
+                'created_at' => ['type' => 'string', 'format' => 'date-time'],
+                'updated_at' => ['type' => 'string', 'format' => 'date-time'],
+            ],
+        ],
+        'DivisionResponse' => [
+            'type' => 'object',
+            'properties' => [
+                'response' => [
+                    'type' => 'object',
+                    'properties' => [
+                        'status' => ['type' => 'integer', 'example' => 200],
+                        'message' => ['type' => 'string'],
+                    ],
+                ],
+                'data' => ['$ref' => '#/components/schemas/Division'],
+            ],
+        ],
+        'Photo' => [
+            'type' => 'object',
+            'properties' => [
+                'id' => ['type' => 'integer'],
+                'image' => ['type' => 'string'],
+                'caption' => ['type' => 'string', 'nullable' => true],
+                'created_at' => ['type' => 'string', 'format' => 'date-time'],
+                'updated_at' => ['type' => 'string', 'format' => 'date-time'],
+            ],
+        ],
+        'Profile' => [
+            'type' => 'object',
+            'properties' => [
+                'id' => ['type' => 'integer'],
+                'name' => ['type' => 'string'],
+                'content' => ['type' => 'string'],
+                'image' => ['type' => 'string', 'nullable' => true],
+                'izin_operasional' => ['type' => 'string', 'nullable' => true],
+                'izin_pendirian' => ['type' => 'string', 'nullable' => true],
+                'map' => ['type' => 'string'],
+                'no_telp' => ['type' => 'string'],
+                'instagram' => ['type' => 'string', 'nullable' => true],
+                'facebook' => ['type' => 'string', 'nullable' => true],
+                'tiktok' => ['type' => 'string', 'nullable' => true],
+                'twitter' => ['type' => 'string', 'nullable' => true],
+                'youtube' => ['type' => 'string', 'nullable' => true],
+                'created_at' => ['type' => 'string', 'format' => 'date-time'],
+                'updated_at' => ['type' => 'string', 'format' => 'date-time'],
+            ],
+        ],
+        'Post' => [
+            'type' => 'object',
+            'properties' => [
+                'id' => ['type' => 'integer'],
+                'title' => ['type' => 'string'],
+                'slug' => ['type' => 'string'],
+                'content' => ['type' => 'string'],
+                'image' => ['type' => 'string', 'nullable' => true],
+                'created_at' => ['type' => 'string', 'format' => 'date-time'],
+                'updated_at' => ['type' => 'string', 'format' => 'date-time'],
+            ],
+        ],
+    ];
+
+    private const DIVISION_PATHS = [
+        '/kesiswaan',
+        '/kurikulum',
+        '/pramuka',
+        '/keislaman',
+        '/hubungan-industri',
+        '/sarana-prasarana',
+    ];
+
+    public function ui(): View
     {
         return view('docs.api');
     }
@@ -24,13 +125,12 @@ class DocsController extends Controller
 
         /** @var LaravelRoute $route */
         foreach ($routes as $route) {
-            $uri = $route->uri(); // e.g. "api/post/{slug}"
+            $uri = $route->uri();
 
-            if (!str_starts_with($uri, 'api')) {
+            if (! str_starts_with($uri, 'api')) {
                 continue;
             }
 
-            // Exclude docs endpoints to avoid self-references.
             if ($uri === 'api/openapi') {
                 continue;
             }
@@ -49,17 +149,13 @@ class DocsController extends Controller
 
             foreach ($methods as $httpMethod) {
                 $method = strtolower($httpMethod);
-                $actionName = $route->getActionName();
 
                 $paths[$path][$method] = array_filter([
                     'tags' => [$this->tagFromPath($path)],
-                    'summary' => $this->summaryFromAction($actionName, $httpMethod, $path),
+                    'summary' => $this->buildSummary($method, $path),
                     'operationId' => $this->operationId($httpMethod, $path),
                     'parameters' => $parameters !== [] ? $parameters : null,
-                    'responses' => [
-                        '200' => ['description' => 'OK'],
-                        '404' => ['description' => 'Not Found'],
-                    ],
+                    'responses' => $this->buildResponses($path, $method),
                 ], fn ($v) => $v !== null);
             }
         }
@@ -80,6 +176,9 @@ class DocsController extends Controller
                 ['url' => $serverUrl],
             ],
             'paths' => $paths,
+            'components' => [
+                'schemas' => self::SCHEMAS,
+            ],
         ];
 
         return response()->json($spec);
@@ -87,9 +186,6 @@ class DocsController extends Controller
 
     private function toOpenApiPath(string $uri): ?string
     {
-        // Normalize to paths relative to /api server.
-        // "api/post/{slug}" => "/post/{slug}"
-        // "api" => "/"
         $normalized = ltrim($uri, '/');
 
         if ($normalized === 'api') {
@@ -99,15 +195,13 @@ class DocsController extends Controller
         if (str_starts_with($normalized, 'api/')) {
             $rest = substr($normalized, 4);
             $rest = $rest === false ? '' : $rest;
-            return '/' . ltrim($rest, '/');
+
+            return '/'.ltrim($rest, '/');
         }
 
         return null;
     }
 
-    /**
-     * @return array<int, array<string, mixed>>
-     */
     private function pathParameters(string $path): array
     {
         preg_match_all('/\\{([^}]+)\\}/', $path, $matches);
@@ -129,6 +223,7 @@ class DocsController extends Controller
     private function tagFromPath(string $path): string
     {
         $segment = trim($path, '/');
+
         if ($segment === '') {
             return 'root';
         }
@@ -136,27 +231,103 @@ class DocsController extends Controller
         return explode('/', $segment, 2)[0];
     }
 
-    private function summaryFromAction(string $actionName, string $httpMethod, string $path): string
+    private function buildSummary(string $method, string $path): string
     {
-        if ($actionName === 'Closure') {
-            return strtoupper($httpMethod) . ' ' . $path;
+        $summaries = [
+            'get' => [
+                '/kesiswaan' => 'Ambil data Kesiswaan terbaru (termasuk foto profil & dokumen)',
+                '/kurikulum' => 'Ambil data Kurikulum terbaru (termasuk foto profil & dokumen)',
+                '/pramuka' => 'Ambil data Pramuka terbaru (termasuk foto profil & dokumen)',
+                '/keislaman' => 'Ambil data Keislaman terbaru (termasuk foto profil & dokumen)',
+                '/hubungan-industri' => 'Ambil data Hubungan Industri terbaru (termasuk foto profil & dokumen)',
+                '/sarana-prasarana' => 'Ambil data Sarana dan Prasarana terbaru (termasuk foto profil & dokumen)',
+            ],
+        ];
+
+        return $summaries[$method][$path] ?? strtoupper($method).' '.$path;
+    }
+
+    private function buildResponses(string $path, string $method): array
+    {
+        $okDescription = 'OK';
+
+        if ($path === '/') {
+            return [
+                '200' => ['description' => $okDescription],
+                '404' => ['description' => 'Not Found'],
+            ];
         }
 
-        $short = $actionName;
-        if (str_contains($short, '\\')) {
-            $short = class_basename($short);
+        $richPaths = [
+            '/kesiswaan' => 'Division',
+            '/kurikulum' => 'Division',
+            '/pramuka' => 'Division',
+            '/keislaman' => 'Division',
+            '/hubungan-industri' => 'Division',
+            '/sarana-prasarana' => 'Division',
+            '/profile' => 'Profile',
+            '/photo' => 'Photo',
+        ];
+
+        if (isset($richPaths[$path]) && $method === 'get') {
+            $schemaName = $richPaths[$path];
+
+            return [
+                '200' => [
+                    'description' => $okDescription,
+                    'content' => [
+                        'application/json' => [
+                            'schema' => [
+                                'type' => 'object',
+                                'properties' => [
+                                    'response' => [
+                                        'type' => 'object',
+                                        'properties' => [
+                                            'status' => ['type' => 'integer', 'example' => 200],
+                                            'message' => ['type' => 'string'],
+                                        ],
+                                    ],
+                                    'data' => ['$ref' => '#/components/schemas/'.$schemaName],
+                                ],
+                            ],
+                        ],
+                    ],
+                ],
+                '404' => [
+                    'description' => 'Not Found',
+                    'content' => [
+                        'application/json' => [
+                            'schema' => [
+                                'type' => 'object',
+                                'properties' => [
+                                    'response' => [
+                                        'type' => 'object',
+                                        'properties' => [
+                                            'status' => ['type' => 'integer', 'example' => 404],
+                                            'message' => ['type' => 'string'],
+                                        ],
+                                    ],
+                                    'data' => ['type' => 'null'],
+                                ],
+                            ],
+                        ],
+                    ],
+                ],
+            ];
         }
 
-        return strtoupper($httpMethod) . ' ' . $path . ' (' . $short . ')';
+        return [
+            '200' => ['description' => $okDescription],
+            '404' => ['description' => 'Not Found'],
+        ];
     }
 
     private function operationId(string $httpMethod, string $path): string
     {
-        $id = strtolower($httpMethod) . '_' . trim($path, '/');
+        $id = strtolower($httpMethod).'_'.trim($path, '/');
         $id = str_replace(['/', '{', '}', '-', '.'], '_', $id);
         $id = preg_replace('/_+/', '_', $id) ?? $id;
 
-        return $id === '' ? strtolower($httpMethod) . '_root' : $id;
+        return $id === '' ? strtolower($httpMethod).'_root' : $id;
     }
 }
-

@@ -3,10 +3,9 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
+use App\Models\TeknikKomputerJaringan;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
-use App\Models\TeknikKomputerJaringan;
-
 
 class TKJController extends Controller
 {
@@ -26,6 +25,7 @@ class TKJController extends Controller
         //
         $tkjs = TeknikKomputerJaringan::latest()->paginate(1);
         $cek_tkj = TeknikKomputerJaringan::count();
+
         return view('admin.tkj.index', compact('tkjs', 'cek_tkj'));
     }
 
@@ -46,22 +46,22 @@ class TKJController extends Controller
         //
         $this->validate($request, [
             'name' => 'required',
-            'content' => 'required', 
-            'image' => 'image|required'
+            'content' => 'required',
+            'image' => 'image|required',
         ]);
 
         $image = $request->file('image');
-        $image->storeAs('tkj', $image->hashName(),'public');
+        $image->storeAs('tkj', $image->hashName(), 'public');
 
         $tkj = TeknikKomputerJaringan::create([
-             'name' => $request->input('name'),
+            'name' => $request->input('name'),
             'content' => $request->input('content'),
             'image' => $image->hashName(),
         ]);
 
-        if($tkj){
+        if ($tkj) {
             return redirect()->route('admin.tkj.index')->with(['success' => 'Data Berhasil Ditambahkan']);
-        }else{
+        } else {
             return redirect()->route('admin.tkj.index')->with(['error' => 'Data Gagal Ditambahkan']);
         }
 
@@ -90,18 +90,18 @@ class TKJController extends Controller
     public function update(Request $request, TeknikKomputerJaringan $tkj)
     {
         //
-        $this->validate($request,[
-        'name' => 'required',
-        'content' => 'required',
-        'image' => 'image|nullable'
+        $this->validate($request, [
+            'name' => 'required',
+            'content' => 'required',
+            'image' => 'image|nullable',
         ]);
 
-        if($request->file('image') == ''){
+        if ($request->file('image') == '') {
             $tkj->update([
                 'name' => $request->input('name'),
                 'content' => $request->input('content'),
             ]);
-        }else{
+        } else {
             Storage::disk('public')->delete('tkj/'.basename(($tkj->image)));
 
             $image = $request->file('image');
@@ -113,9 +113,9 @@ class TKJController extends Controller
                 'image' => $image->hashName(),
             ]);
         }
-        if($tkj){
+        if ($tkj) {
             return redirect()->route('admin.tkj.index')->with(['success' => 'Data Berhasil Ditambahkan']);
-        }else{
+        } else {
             return redirect()->route('admin.tkj.index')->with(['error' => 'Data Gagal Ditambahkan']);
 
         }
@@ -128,18 +128,17 @@ class TKJController extends Controller
     {
         //
         $tkj = TeknikKomputerJaringan::findOrFail($id);
-        if($tkj->image){
+        if ($tkj->image) {
             Storage::disk('public')->delete('tkj/'.basename($tkj->image));
         }
         $tkj->delete();
-        if($tkj){
+        if ($tkj) {
             return response()->json([
-                'status' => 'success'
+                'status' => 'success',
             ]);
-        }
-        else{
+        } else {
             return response()->json([
-                'status' => 'error'
+                'status' => 'error',
             ]);
         }
     }

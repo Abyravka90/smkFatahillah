@@ -2,30 +2,33 @@
 
 namespace App\Http\Controllers\Admin;
 
-use App\Models\Event;
-use Illuminate\Support\Str;
-use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
+use App\Models\Event;
+use Illuminate\Http\Request;
+use Illuminate\Support\Str;
 
 class EventController extends Controller
 {
     //
-    public function __construct(){
+    public function __construct()
+    {
         $this->middleware('permission:events.index')->only(['index']);
         $this->middleware('permission:events.create')->only(['create', 'store']);
-        $this->middleware('permission:events.edit')->only(['edit','update']);
+        $this->middleware('permission:events.edit')->only(['edit', 'update']);
         $this->middleware('permission:events.delete')->only(['destroy']);
     }
 
-    public function index(){
-        $events = Event::latest()->when(request()->q, function($events){
+    public function index()
+    {
+        $events = Event::latest()->when(request()->q, function ($events) {
             $events = $events->where('title', 'like', '%'.request()->q.'%');
         })->paginate(10);
-        
+
         return view('admin.event.index', compact('events'));
     }
 
-    public function create(){
+    public function create()
+    {
         return view('admin.event.create');
     }
 
@@ -43,22 +46,24 @@ class EventController extends Controller
             'slug' => Str::slug($request->input('title'), '-'),
             'content' => $request->content,
             'location' => $request->input('location'),
-            'date' => $request->input('date')
+            'date' => $request->input('date'),
         ]);
 
-        if($event){
+        if ($event) {
             return redirect()->route('admin.event.index')->with(['success' => 'Data berhasil ditambahkan']);
-        }else{
+        } else {
             return redirect()->route('admin.event.index')->with(['error' => 'Data Gagal Ditambahkan']);
         }
 
     }
 
-    public function edit(Event $event){
+    public function edit(Event $event)
+    {
         return view('admin.event.edit', compact('event'));
     }
 
-    public function update(Request $request, Event $event){
+    public function update(Request $request, Event $event)
+    {
         $this->validate($request, [
             'title' => 'required',
             'content' => 'required',
@@ -75,23 +80,24 @@ class EventController extends Controller
             'date' => $request->input('date'),
         ]);
 
-        if($event){
+        if ($event) {
             return redirect()->route('admin.event.index')->with(['success' => 'Data berhasil Diupdate']);
-        }else{
+        } else {
             return redirect()->route('admin.event.index')->with(['error' => 'Data Gagal Diupdate']);
         }
     }
 
-    public function destroy($id){
+    public function destroy($id)
+    {
         $event = Event::findOrFail($id);
         $event->delete();
-        if($event){
+        if ($event) {
             return response()->json([
-                'status' => 'success'
+                'status' => 'success',
             ]);
         } else {
             return response()->json([
-                'status' => 'error'
+                'status' => 'error',
             ]);
         }
     }

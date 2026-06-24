@@ -2,8 +2,8 @@
 
 namespace App\Http\Controllers\Admin;
 
-use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
+use Illuminate\Http\Request;
 use Spatie\Permission\Models\Permission;
 use Spatie\Permission\PermissionRegistrar;
 
@@ -18,7 +18,7 @@ class PermissionController extends Controller
 
     public function index()
     {
-        $permissions = Permission::latest()->when(request()->q, function($permissions){
+        $permissions = Permission::latest()->when(request()->q, function ($permissions) {
             $permissions = $permissions->where('name', 'like', '%'.request()->q.'%');
         })->paginate(10);
 

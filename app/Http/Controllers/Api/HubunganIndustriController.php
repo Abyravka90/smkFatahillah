@@ -4,13 +4,12 @@ namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
 use App\Models\HubunganIndustri;
-use Illuminate\Http\Request;
 
 class HubunganIndustriController extends Controller
 {
     public function index()
     {
-        $hubunganIndustri = HubunganIndustri::latest()->first();
+        $hubunganIndustri = HubunganIndustri::with('documents')->latest()->first();
 
         if ($hubunganIndustri) {
             return response()->json([
@@ -31,4 +30,3 @@ class HubunganIndustriController extends Controller
         ], 404);
     }
 }
-

@@ -9,10 +9,11 @@ class OTKP extends Model
 {
     //
     protected $guarded = [];
-    
-    public function image() : Attribute{
+
+    public function image(): Attribute
+    {
         return Attribute::make(
-            get:fn($value)=>url('storage/otkp/'.$value),
+            get: fn ($value) => url('storage/otkp/'.$value),
         );
     }
 }

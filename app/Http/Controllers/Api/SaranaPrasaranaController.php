@@ -4,13 +4,12 @@ namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
 use App\Models\SaranaPrasarana;
-use Illuminate\Http\Request;
 
 class SaranaPrasaranaController extends Controller
 {
     public function index()
     {
-        $saranaPrasarana = SaranaPrasarana::latest()->first();
+        $saranaPrasarana = SaranaPrasarana::with('documents')->latest()->first();
 
         if ($saranaPrasarana) {
             return response()->json([
@@ -31,4 +30,3 @@ class SaranaPrasaranaController extends Controller
         ], 404);
     }
 }
-

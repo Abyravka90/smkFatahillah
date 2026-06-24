@@ -4,25 +4,27 @@ namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
 use App\Models\Category;
-use Illuminate\Http\Request;
 
 class CategoryController extends Controller
 {
     //
-    public function index(){
+    public function index()
+    {
         $categories = Category::latest()->paginate(10);
+
         return response()->json([
             'response' => [
-                'status' => 200, 
-                'message' => 'List Data Categories'
-            ], 
-            "data" => $categories
+                'status' => 200,
+                'message' => 'List Data Categories',
+            ],
+            'data' => $categories,
         ], 200);
     }
 
-    public function show($slug){
+    public function show($slug)
+    {
         $category = Category::where('slug', $slug)->first();
-        if($category){
+        if ($category) {
             return response()->json([
                 'response' => [
                     'status' => 200,
@@ -33,7 +35,7 @@ class CategoryController extends Controller
             return response()->json([
                 'response' => [
                     'status' => 404,
-                    'message' => 'data berdasarkan kategori tidak ditemukan'
+                    'message' => 'data berdasarkan kategori tidak ditemukan',
                 ], 'data' => null,
             ], 404);
         }

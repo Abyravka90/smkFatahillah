@@ -29,6 +29,8 @@
                 <th>Nama</th>
                 <th>Content</th>
                 <th>Gambar</th>
+                <th>Foto Profil</th>
+                <th>Dokumen</th>
                 <th style="width:15%;text-align:center">AKSI</th>
               </tr>
               </thead>
@@ -50,6 +52,8 @@
                       <span class="text-muted">Tidak ada gambar</span>
                     @endif
                   </td>
+                  <td>@include('admin.partials.division-profile-photo-cell', ['item' => $kesiswaan])</td>
+                  <td>@include('admin.partials.division-documents-cell', ['item' => $kesiswaan])</td>
                   <td class="text-center">
                     
                       <a href="{{ route('admin.kesiswaan.edit', $kesiswaan->id) }}" class="btn btn-sm btn-primary">

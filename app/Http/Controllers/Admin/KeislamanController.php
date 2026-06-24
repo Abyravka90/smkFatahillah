@@ -2,13 +2,17 @@
 
 namespace App\Http\Controllers\Admin;
 
+use App\Http\Controllers\Admin\Concerns\HandlesDivisionUploads;
 use App\Http\Controllers\Controller;
 use App\Models\Keislaman;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Storage;
 
 class KeislamanController extends Controller
 {
+    use HandlesDivisionUploads;
+
+    private string $folder = 'keislaman';
+
     public function __construct()
     {
         $this->middleware(['permission:keislaman.index'])->only(['index']);
@@ -19,7 +23,7 @@ class KeislamanController extends Controller
 
     public function index()
     {
-        $keislamans = Keislaman::latest()->paginate(1);
+        $keislamans = Keislaman::with('documents')->latest()->paginate(1);
         $cek_keislaman = Keislaman::count();
 
         return view('admin.keislaman.index', compact('keislamans', 'cek_keislaman'));
@@ -32,24 +36,10 @@ class KeislamanController extends Controller
 
     public function store(Request $request)
     {
-        $this->validate($request, [
-            'name' => 'required',
-            'content' => 'required',
-            'image' => 'nullable|image',
-        ]);
+        $this->validate($request, $this->divisionRules());
 
-        $data = [
-            'name' => $request->input('name'),
-            'content' => $request->input('content'),
-        ];
-
-        if ($request->hasFile('image')) {
-            $image = $request->file('image');
-            $image->storeAs('keislaman', $image->hashName(), 'public');
-            $data['image'] = $image->hashName();
-        }
-
-        $keislaman = Keislaman::create($data);
+        $keislaman = Keislaman::create($this->storeDivisionData($request, $this->folder));
+        $this->storeDivisionDocuments($request, $keislaman, $this->folder);
 
         if ($keislaman) {
             return redirect()->route('admin.keislaman.index')->with(['success' => 'Data Berhasil Ditambahkan']);
@@ -60,33 +50,17 @@ class KeislamanController extends Controller
 
     public function edit(Keislaman $keislaman)
     {
+        $keislaman->load('documents');
+
         return view('admin.keislaman.edit', compact('keislaman'));
     }
 
     public function update(Request $request, Keislaman $keislaman)
     {
-        $this->validate($request, [
-            'name' => 'required',
-            'content' => 'required',
-            'image' => 'nullable|image',
-        ]);
+        $this->validate($request, $this->divisionRules());
 
-        $data = [
-            'name' => $request->input('name'),
-            'content' => $request->input('content'),
-        ];
-
-        if ($request->hasFile('image')) {
-            if ($keislaman->getRawOriginal('image')) {
-                Storage::disk('public')->delete('keislaman/' . basename($keislaman->getRawOriginal('image')));
-            }
-
-            $image = $request->file('image');
-            $image->storeAs('keislaman', $image->hashName(), 'public');
-            $data['image'] = $image->hashName();
-        }
-
-        $keislaman->update($data);
+        $keislaman->update($this->updateDivisionData($request, $keislaman, $this->folder));
+        $this->storeDivisionDocuments($request, $keislaman, $this->folder);
 
         if ($keislaman) {
             return redirect()->route('admin.keislaman.index')->with(['success' => 'Data Berhasil Diupdate']);
@@ -97,23 +71,14 @@ class KeislamanController extends Controller
 
     public function destroy(string $id)
     {
-        $keislaman = Keislaman::findOrFail($id);
-
-        if ($keislaman->getRawOriginal('image')) {
-            Storage::disk('public')->delete('keislaman/' . basename($keislaman->getRawOriginal('image')));
-        }
-
+        $keislaman = Keislaman::with('documents')->findOrFail($id);
+        $this->deleteDivisionFiles($keislaman, $this->folder);
         $keislaman->delete();
 
         if ($keislaman) {
-            return response()->json([
-                'status' => 'success',
-            ]);
+            return response()->json(['status' => 'success']);
         }
 
-        return response()->json([
-            'status' => 'error',
-        ]);
+        return response()->json(['status' => 'error']);
     }
 }
-

@@ -10,9 +10,10 @@ class Logo extends Model
     //
     protected $guarded = [];
 
-    public function image(): Attribute{
+    public function image(): Attribute
+    {
         return Attribute::make(
-            get:fn($value)=>url('/storage/logos/'.$value),
+            get: fn ($value) => url('/storage/logos/'.$value),
         );
     }
 }

@@ -10,12 +10,13 @@ class Post extends Model
 {
     //
     use HasFactory;
+
     protected $guarded = [];
 
-    public function image() :Attribute
+    public function image(): Attribute
     {
         return Attribute::make(
-            get:fn($value) => url('/storage/posts/'.$value),
+            get: fn ($value) => url('/storage/posts/'.$value),
         );
     }
 
@@ -27,7 +28,5 @@ class Post extends Model
     public function tags()
     {
         return $this->belongsToMany(Tag::class);
-    }   
-
-
+    }
 }

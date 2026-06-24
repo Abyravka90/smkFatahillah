@@ -42,4 +42,3 @@ class PagesContentSeeder extends Seeder
         );
     }
 }
-

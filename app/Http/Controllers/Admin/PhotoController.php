@@ -10,24 +10,27 @@ use Illuminate\Support\Facades\Storage;
 class PhotoController extends Controller
 {
     //
-    public function __construct(){
+    public function __construct()
+    {
         $this->middleware('permission:photos.index')->only(['index']);
         $this->middleware('permission:photos.create')->only(['store']);
         $this->middleware('permission:photos.delete')->only(['destroy']);
     }
 
-    public function index(){
-        $photos = Photo::latest()->when(request()->q, function($photos) {
-            $photos = $photos->where('title', 'like', '%'. request()->q .'%');
+    public function index()
+    {
+        $photos = Photo::latest()->when(request()->q, function ($photos) {
+            $photos = $photos->where('title', 'like', '%'.request()->q.'%');
         })->paginate(10);
 
         return view('admin.photo.index', compact('photos'));
     }
 
-    public function store(Request $request){
-        $this->validate($request,[
+    public function store(Request $request)
+    {
+        $this->validate($request, [
             'image' => 'required|image',
-            'caption' => 'required'
+            'caption' => 'required',
         ]);
 
         $image = $request->file('image');
@@ -38,25 +41,26 @@ class PhotoController extends Controller
             'caption' => $request->input('caption'),
         ]);
 
-        if($photos){
+        if ($photos) {
             return redirect()->route('admin.photo.index')->with(['success' => 'Data Berhasil Ditambahkan']);
         } else {
             return redirect()->route('admin.photo.index')->with(['success' => 'Data Gagal Ditambahkan']);
         }
     }
 
-    public function destroy($id){
+    public function destroy($id)
+    {
         $photo = Photo::findOrFail($id);
         Storage::disk('public')->delete('photos/'.basename($photo->image));
         $photo->delete();
 
-        if($photo){
+        if ($photo) {
             return response()->json([
-                'status' => 'success'
+                'status' => 'success',
             ]);
         } else {
             return response()->json([
-                'status' => 'error'
+                'status' => 'error',
             ]);
         }
     }

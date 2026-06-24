@@ -4,7 +4,6 @@ namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
 use App\Models\OTKP;
-use App\Models\Profile;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
 
@@ -26,6 +25,7 @@ class OTKPController extends Controller
         //
         $otkps = OTKP::latest()->paginate(1);
         $cek_otkp = OTKP::count();
+
         return view('admin.otkp.index', compact('otkps', 'cek_otkp'));
     }
 
@@ -44,27 +44,27 @@ class OTKPController extends Controller
     public function store(Request $request)
     {
         //
-        $this->validate($request,[
-          'image' => 'image',
-          'name' => 'required',
-          'content' => 'required',  
+        $this->validate($request, [
+            'image' => 'image',
+            'name' => 'required',
+            'content' => 'required',
         ]);
 
-        //request dulu gambarnya
+        // request dulu gambarnya
         $image = $request->file('image');
 
-        //disimpan di storage
+        // disimpan di storage
         $image->storeAs('otkp', $image->hashName(), 'public');
 
-        //simpan di databse
+        // simpan di databse
         $otkps = OTKP::create([
             'name' => $request->input('name'),
             'content' => $request->input('content'),
             'image' => $image->hashName(),
         ]);
-        if($otkps){
+        if ($otkps) {
             return redirect()->route('admin.otkp.index')->with(['success' => 'Data Berhasil Ditambahkan']);
-        }else{
+        } else {
             return redirect()->route('admin.otkp.index')->with(['error' => 'Data Gagal ditambahkan']);
         }
     }
@@ -86,7 +86,6 @@ class OTKPController extends Controller
         return view('admin.otkp.edit', compact('otkp'));
     }
 
-
     /**
      * Update the specified resource in storage.
      */
@@ -99,16 +98,16 @@ class OTKPController extends Controller
             'image' => 'nullable|image',
         ]);
 
-        if($request->file('image') == '' ){
+        if ($request->file('image') == '') {
             $otkp->update([
                 'name' => $request->input('name'),
                 'content' => $request->input('content'),
             ]);
-        }else{
+        } else {
             // hapus file lama
             Storage::disk('public')->delete('otkp/'.basename($otkp->image));
 
-            $image= $request->file('image');
+            $image = $request->file('image');
             $image->storeAs('otkp', $image->hashName(), 'public');
 
             $otkp->update([
@@ -117,9 +116,9 @@ class OTKPController extends Controller
                 'image' => $image->hashName(),
             ]);
 
-            if($otkp){
+            if ($otkp) {
                 return redirect()->route('admin.otkp.index')->with(['success' => 'Data Berhasil Ditambahkan']);
-            }else{
+            } else {
                 return redirect()->route('admin.otkp.index')->with(['error' => 'Data Gagal Ditambahkan']);
             }
         }
@@ -133,17 +132,17 @@ class OTKPController extends Controller
         //
         $otkp = OTKP::findOrFail($id);
 
-        if($otkp->image){
+        if ($otkp->image) {
             Storage::disk('public')->delete('otkp/'.basename($otkp->image));
         }
         $otkp->delete();
-        if($otkp){
+        if ($otkp) {
             return response()->json([
-                'status' => 'success'
+                'status' => 'success',
             ]);
-        }else{
+        } else {
             return response()->json([
-                'status' => 'error'
+                'status' => 'error',
             ]);
         }
     }

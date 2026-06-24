@@ -10,11 +10,13 @@ class Spmb extends Model
 {
     //
     use HasFactory;
+
     protected $guarded = [];
-    public function image() :Attribute
+
+    public function image(): Attribute
     {
         return Attribute::make(
-            get:fn($value)=> url('/storage/spmb/image/'.$value),
+            get: fn ($value) => url('/storage/spmb/image/'.$value),
         );
     }
 }

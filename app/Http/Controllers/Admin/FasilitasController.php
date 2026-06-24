@@ -10,17 +10,23 @@ use Illuminate\Support\Facades\Storage;
 class FasilitasController extends Controller
 {
     //
-    public function index(){
+    public function index()
+    {
         $fasilitas = Fasilitas::latest()->paginate(10);
+
         return view('admin.fasilitas.index', compact('fasilitas'));
     }
-    public function create(){
+
+    public function create()
+    {
         return view('admin.fasilitas.create');
     }
-    public function store(Request $request){
-        $this->validate($request,[
-          'title' => 'required',
-          'image' => 'image|required'  
+
+    public function store(Request $request)
+    {
+        $this->validate($request, [
+            'title' => 'required',
+            'image' => 'image|required',
         ]);
 
         $image = $request->file('image');
@@ -28,11 +34,11 @@ class FasilitasController extends Controller
 
         $fasilitas = Fasilitas::create([
             'title' => $request->input('title'),
-            'image' => $image->hashName()
+            'image' => $image->hashName(),
         ]);
-        if($fasilitas){
+        if ($fasilitas) {
             return redirect()->route('admin.fasilitas.index')->with(['success' => 'Data Berhasil Ditambahkan']);
-        }else{
+        } else {
             return redirect()->route('admin.fasilitas.index')->with(['error' => 'Data Gagal Ditambahkan']);
         }
     }
@@ -63,19 +69,20 @@ class FasilitasController extends Controller
 
     // }
 
-    public function destroy($id){
+    public function destroy($id)
+    {
         $fasilitas = Fasilitas::findOrFail($id);
-        if($fasilitas->image){
+        if ($fasilitas->image) {
             Storage::disk('public')->delete('fasilitas/'.basename($fasilitas->image));
         }
         $fasilitas->delete();
-        if($fasilitas){
+        if ($fasilitas) {
             return response()->json([
-                'status' => 'success'
+                'status' => 'success',
             ]);
-        }else {
+        } else {
             return response()->json([
-                'status' => 'error'
+                'status' => 'error',
             ]);
         }
     }

@@ -10,17 +10,21 @@ use Illuminate\Support\Facades\Storage;
 class ProfileController extends Controller
 {
     //
-    public function index(){
+    public function index()
+    {
         $profiles = Profile::query()->latest()->paginate(10);
         $cek_profile = Profile::count();
+
         return view('admin.profile.index', compact('profiles', 'cek_profile'));
     }
 
-    public function create(){
+    public function create()
+    {
         return view('admin.profile.create');
     }
 
-    public function store(Request $request){
+    public function store(Request $request)
+    {
         $this->validate($request, [
             'name' => 'required',
             'izin_operasional' => 'file|mimes:pdf',
@@ -28,7 +32,7 @@ class ProfileController extends Controller
             'image' => 'image|mimes:jpeg,png,jpg',
             'content' => 'required',
             'map' => 'required',
-            'no_telp' => 'required'
+            'no_telp' => 'required',
         ]);
 
         $izin_operasional = $request->file('izin_operasional');
@@ -55,18 +59,20 @@ class ProfileController extends Controller
             'youtube' => $request->input('youtube'),
         ]);
 
-        if($profile){
+        if ($profile) {
             return redirect()->route('admin.profile.index')->with(['success' => 'Data Berhasil ditambahkan']);
-        }else{
+        } else {
             return redirect()->route('admin.profile.index')->with(['error' => 'Data Gagal Ditambahkan']);
         }
     }
 
-    public function edit(Profile $profile){
+    public function edit(Profile $profile)
+    {
         return view('admin.profile.edit', compact('profile'));
     }
 
-    public function update(Request $request, Profile $profile){
+    public function update(Request $request, Profile $profile)
+    {
         $this->validate($request, [
             'name' => 'required',
             'izin_operasional' => 'file|mimes:pdf',
@@ -74,7 +80,7 @@ class ProfileController extends Controller
             'image' => 'image|mimes:jpeg,png,jpg',
             'content' => 'required',
             'map' => 'required',
-            'no_telp' => 'required'
+            'no_telp' => 'required',
         ]);
         $data = [
             'name' => $request->input('name'),
@@ -87,10 +93,10 @@ class ProfileController extends Controller
             'no_telp' => $request->input('no_telp'),
             'youtube' => $request->input('youtube'),
         ];
-        
+
         // Handle image upload
         if ($request->file('image')) {
-            Storage::disk('public')->delete('profile/' . basename($profile->image));
+            Storage::disk('public')->delete('profile/'.basename($profile->image));
             $image = $request->file('image');
             $image->storeAs('profile', $image->hashName(), 'public');
             $data['image'] = $image->hashName();
@@ -98,7 +104,7 @@ class ProfileController extends Controller
 
         // Handle izin_operasional upload
         if ($request->file('izin_operasional')) {
-            Storage::disk('public')->delete('izin_operasional/' . basename($profile->izin_operasional));
+            Storage::disk('public')->delete('izin_operasional/'.basename($profile->izin_operasional));
             $izin_operasional = $request->file('izin_operasional');
             $izin_operasional->storeAs('izin_operasional', $izin_operasional->hashName(), 'public');
             $data['izin_operasional'] = $izin_operasional->hashName();
@@ -106,38 +112,39 @@ class ProfileController extends Controller
 
         // Handle izin_pendirian upload
         if ($request->file('izin_pendirian')) {
-            Storage::disk('public')->delete('izin_pendirian/' . basename($profile->izin_pendirian));
+            Storage::disk('public')->delete('izin_pendirian/'.basename($profile->izin_pendirian));
             $izin_pendirian = $request->file('izin_pendirian');
             $izin_pendirian->storeAs('izin_pendirian', $izin_pendirian->hashName(), 'public');
             $data['izin_pendirian'] = $izin_pendirian->hashName();
         }
-    
+
         $profile->update($data);
-        if($profile){
+        if ($profile) {
             return redirect()->route('admin.profile.index')->with(['success' => 'Data Berhasil Diupdate']);
         } else {
             return redirect()->route('admin.profile.index')->with(['error' => 'Data Gagal Diupdate']);
         }
     }
 
-    public function destroy($id){
+    public function destroy($id)
+    {
         $profile = Profile::findOrFail($id);
 
         // Delete files if exist
         if ($profile->image) {
-            Storage::disk('public')->delete('profile/' . basename($profile->image));
+            Storage::disk('public')->delete('profile/'.basename($profile->image));
         }
         if ($profile->izin_operasional) {
-            Storage::disk('public')->delete('izin_operasional/' . basename($profile->izin_operasional));
+            Storage::disk('public')->delete('izin_operasional/'.basename($profile->izin_operasional));
         }
         if ($profile->izin_pendirian) {
-            Storage::disk('public')->delete('izin_pendirian/' . basename($profile->izin_pendirian));
+            Storage::disk('public')->delete('izin_pendirian/'.basename($profile->izin_pendirian));
         }
 
         $profile->delete();
-        if($profile){
+        if ($profile) {
             return redirect()->route('admin.profile.index')->with(['success' => 'Data Berhasil Dihapus']);
-        }else{
+        } else {
             return redirect()->route('admin.profile.index')->with(['error' => 'Data Gagal Dihapus']);
         }
     }

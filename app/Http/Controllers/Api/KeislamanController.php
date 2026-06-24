@@ -4,13 +4,12 @@ namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
 use App\Models\Keislaman;
-use Illuminate\Http\Request;
 
 class KeislamanController extends Controller
 {
     public function index()
     {
-        $keislaman = Keislaman::latest()->first();
+        $keislaman = Keislaman::with('documents')->latest()->first();
 
         if ($keislaman) {
             return response()->json([
@@ -31,4 +30,3 @@ class KeislamanController extends Controller
         ], 404);
     }
 }
-
