@@ -99,6 +99,9 @@
                         @can('saranaprasarana.index')
                             <li class="{{ setActive('admin/saranaprasarana') }}"><a class="nav-link" href="{{ route('admin.saranaprasarana.index') }}"><i class="fas fa-book-open"></i><span>Sarana & Prasarana</span></a></li>
                         @endcan
+                        @can('kepalasekolah.index')
+                            <li class="{{ setActive('admin/kepalasekolah') }}"><a class="nav-link" href="{{ route('admin.kepalasekolah.index') }}"><i class="fas fa-book-open"></i><span>Kepala Sekolah</span></a></li>
+                        @endcan
 
                         <li class="{{ setActive('admin/kontributor') }}"><a class="nav-link"
                                 href="{{ route('admin.kontributor.index') }}"><i class="fas fa-book-open"></i>
