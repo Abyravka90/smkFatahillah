@@ -8,6 +8,7 @@ use App\Http\Controllers\Admin\FasilitasController;
 use App\Http\Controllers\Admin\HubunganIndustriController;
 use App\Http\Controllers\Admin\JurusanController;
 use App\Http\Controllers\Admin\KeislamanController;
+use App\Http\Controllers\Admin\KepalaSekolahController;
 use App\Http\Controllers\Admin\KesiswaanController;
 use App\Http\Controllers\Admin\KontributorController;
 use App\Http\Controllers\Admin\KurikulumController;
@@ -168,6 +169,12 @@ Route::prefix('admin')->group(function () {
             ]);
 
         Route::resource('/saranaprasarana', SaranaPrasaranaController::class,
+            [
+                'except' => ['show'],
+                'as' => 'admin',
+            ]);
+
+        Route::resource('/kepalasekolah', KepalaSekolahController::class,
             [
                 'except' => ['show'],
                 'as' => 'admin',

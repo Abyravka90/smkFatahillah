@@ -9,6 +9,7 @@ use App\Models\Fasilitas;
 use App\Models\HubunganIndustri;
 use App\Models\Jurusan;
 use App\Models\Keislaman;
+use App\Models\KepalaSekolah;
 use App\Models\Kesiswaan;
 use App\Models\Kontributor;
 use App\Models\Kurikulum;
@@ -115,18 +116,33 @@ class DummyContentSeeder extends Seeder
                     ['original_name' => 'Laporan Kegiatan Kemah Bhakti.docx', 'mime_type' => 'application/vnd.openxmlformats-officedocument.wordprocessingml.document', 'size' => 512000],
                 ],
             ],
+            'kepalasekolah' => [
+                'model' => KepalaSekolah::class,
+                'folder' => 'kepala_sekolah',
+                'name' => 'Profil Kepala Sekolah',
+                'paragraphs' => [
+                    'Kepala Sekolah SMK Fatahillah memiliki visi untuk menjadikan sekolah sebagai pusat unggulan pendidikan vokasi yang menghasilkan lulusan berdaya saing tinggi. Dengan pengalaman lebih dari 15 tahun di dunia pendidikan, beliau memimpin dengan penuh dedikasi dan integritas.',
+                    'Program-program unggulan terus dikembangkan di bawah kepemimpinan beliau, termasuk penguatan kurikulum berbasis industri, peningkatan kualitas guru, serta pengembangan fasilitas sekolah yang modern dan representatif.',
+                    'Kepala Sekolah juga aktif menjalin kemitraan dengan berbagai pihak, baik dari dunia usaha dan industri, perguruan tinggi, maupun pemerintah daerah, demi mewujudkan SMK Fatahillah yang bermutu dan berkarakter.',
+                ],
+                'documents' => [
+                    ['original_name' => 'Visi Misi Kepala Sekolah.pdf', 'mime_type' => 'application/pdf', 'size' => 204800],
+                    ['original_name' => 'Program Kerja Kepala Sekolah 2025.pdf', 'mime_type' => 'application/pdf', 'size' => 307200],
+                ],
+            ],
         ];
 
         $nullableImageModels = [
             Keislaman::class,
             HubunganIndustri::class,
             SaranaPrasarana::class,
+            KepalaSekolah::class,
         ];
 
         foreach ($dummyContent as $key => $config) {
             $model = $config['model'];
             $paragraphs = $config['paragraphs'];
-            $content = '<p>' . implode('</p><p>', $paragraphs) . '</p>';
+            $content = '<p>'.implode('</p><p>', $paragraphs).'</p>';
 
             $record = $model::firstOrCreate(
                 ['name' => $config['name']],
@@ -145,7 +161,7 @@ class DummyContentSeeder extends Seeder
                     'documentable_id' => $record->id,
                     'documentable_type' => $config['model'],
                     'folder' => $config['folder'],
-                    'filename' => 'dummy_' . $doc['original_name'],
+                    'filename' => 'dummy_'.$doc['original_name'],
                     'original_name' => $doc['original_name'],
                     'mime_type' => $doc['mime_type'],
                     'size' => $doc['size'],
@@ -245,11 +261,11 @@ class DummyContentSeeder extends Seeder
 
         $postData = [
             ['title' => 'Kegiatan Belajar Mengajar Semester Genap 2025', 'category_id' => $catAkademik?->id ?? 1,
-             'content' => '<p>Semester genap tahun ajaran 2025/2026 telah dimulai dengan berbagai program unggulan.</p>'],
+                'content' => '<p>Semester genap tahun ajaran 2025/2026 telah dimulai dengan berbagai program unggulan.</p>'],
             ['title' => 'Juara Umum Lomba Komputer Tingkat Kabupaten', 'category_id' => $catPrestasi?->id ?? 1,
-             'content' => '<p>Selamat kepada siswa kami yang berhasil meraih juara umum kompetisi komputer tingkat kabupaten.</p>'],
+                'content' => '<p>Selamat kepada siswa kami yang berhasil meraih juara umum kompetisi komputer tingkat kabupaten.</p>'],
             ['title' => 'Kunjungan Industri ke Perusahaan Teknologi', 'category_id' => $catKegiatan?->id ?? 1,
-             'content' => '<p>Sebanyak 50 siswa mengikuti kunjungan industri ke perusahaan teknologi terkemuka.</p>'],
+                'content' => '<p>Sebanyak 50 siswa mengikuti kunjungan industri ke perusahaan teknologi terkemuka.</p>'],
         ];
         foreach ($postData as $p) {
             Post::firstOrCreate(
@@ -267,14 +283,14 @@ class DummyContentSeeder extends Seeder
         // ---------- SEED: EVENTS ----------
         $eventData = [
             ['title' => 'Pembagian Rapor Semester Genap', 'slug' => 'pembagian-rapor-genap',
-             'content' => '<p>Pembagian rapor semester genap tahun ajaran 2025/2026.</p>',
-             'location' => 'Aula SMK Fatahillah', 'date' => '2026-07-15'],
+                'content' => '<p>Pembagian rapor semester genap tahun ajaran 2025/2026.</p>',
+                'location' => 'Aula SMK Fatahillah', 'date' => '2026-07-15'],
             ['title' => 'Praktik Kerja Lapangan (PKL) 2025', 'slug' => 'pkl-2025',
-             'content' => '<p>Pelaksanaan PKL bagi siswa kelas XI di berbagai mitra industri.</p>',
-             'location' => 'Mitra Industri', 'date' => '2026-08-01'],
+                'content' => '<p>Pelaksanaan PKL bagi siswa kelas XI di berbagai mitra industri.</p>',
+                'location' => 'Mitra Industri', 'date' => '2026-08-01'],
             ['title' => 'Peringatan Hari Kemerdekaan', 'slug' => 'hari-kemerdekaan-2025',
-             'content' => '<p>Upacara dan lomba dalam rangka HUT RI ke-81.</p>',
-             'location' => 'Lapangan SMK Fatahillah', 'date' => '2026-08-17'],
+                'content' => '<p>Upacara dan lomba dalam rangka HUT RI ke-81.</p>',
+                'location' => 'Lapangan SMK Fatahillah', 'date' => '2026-08-17'],
         ];
         foreach ($eventData as $e) {
             Event::firstOrCreate(['slug' => $e['slug']], $e);

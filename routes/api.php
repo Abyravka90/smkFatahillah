@@ -7,6 +7,7 @@ use App\Http\Controllers\Api\FasilitasController;
 use App\Http\Controllers\Api\HubunganIndustriController;
 use App\Http\Controllers\Api\JurusanController;
 use App\Http\Controllers\Api\KeislamanController;
+use App\Http\Controllers\Api\KepalaSekolahController;
 use App\Http\Controllers\Api\KesiswaanController;
 use App\Http\Controllers\Api\KontributorController;
 use App\Http\Controllers\Api\KurikulumController;
@@ -66,6 +67,7 @@ Route::get('/pramuka', [PramukaController::class, 'index']);
 Route::get('/keislaman', [KeislamanController::class, 'index']);
 Route::get('/hubungan-industri', [HubunganIndustriController::class, 'index']);
 Route::get('/sarana-prasarana', [SaranaPrasaranaController::class, 'index']);
+Route::get('/kepala-sekolah', [KepalaSekolahController::class, 'index']);
 
 Route::get('/kontributor/{id}', [KontributorController::class, 'show']);
 Route::get('/kontributor/detail/{id}', [KontributorController::class, 'detail']);

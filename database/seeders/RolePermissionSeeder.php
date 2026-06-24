@@ -4,8 +4,8 @@ namespace Database\Seeders;
 
 use App\Models\User;
 use Illuminate\Database\Seeder;
-use Spatie\Permission\Models\Role;
 use Spatie\Permission\Models\Permission;
+use Spatie\Permission\Models\Role;
 use Spatie\Permission\PermissionRegistrar;
 
 class RolePermissionSeeder extends Seeder
@@ -21,6 +21,7 @@ class RolePermissionSeeder extends Seeder
             'keislaman',
             'hubunganindustri',
             'saranaprasarana',
+            'kepalasekolah',
         ];
 
         $divisionsPlural = [
@@ -58,6 +59,7 @@ class RolePermissionSeeder extends Seeder
             'admin_keislaman' => ['keislaman'],
             'admin_sarpras' => ['saranaprasarana'],
             'admin_pramuka' => ['pramuka', 'pramukas'],
+            'admin_kepalasekolah' => ['kepalasekolah'],
         ];
 
         $roleUsers = [
@@ -88,6 +90,10 @@ class RolePermissionSeeder extends Seeder
             'admin_pramuka' => [
                 'name' => 'Admin Pramuka',
                 'email' => 'pramuka@gmail.com',
+            ],
+            'admin_kepalasekolah' => [
+                'name' => 'Admin Kepala Sekolah',
+                'email' => 'kepalasekolah@gmail.com',
             ],
         ];
 

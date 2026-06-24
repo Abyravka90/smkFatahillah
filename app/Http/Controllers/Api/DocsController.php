@@ -241,6 +241,7 @@ class DocsController extends Controller
                 '/keislaman' => 'Ambil data Keislaman terbaru (termasuk foto profil & dokumen)',
                 '/hubungan-industri' => 'Ambil data Hubungan Industri terbaru (termasuk foto profil & dokumen)',
                 '/sarana-prasarana' => 'Ambil data Sarana dan Prasarana terbaru (termasuk foto profil & dokumen)',
+                '/kepala-sekolah' => 'Ambil data Kepala Sekolah terbaru (termasuk foto profil & dokumen)',
             ],
         ];
 
@@ -265,6 +266,7 @@ class DocsController extends Controller
             '/keislaman' => 'Division',
             '/hubungan-industri' => 'Division',
             '/sarana-prasarana' => 'Division',
+            '/kepala-sekolah' => 'Division',
             '/profile' => 'Profile',
             '/photo' => 'Photo',
         ];
