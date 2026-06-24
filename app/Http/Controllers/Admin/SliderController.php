@@ -57,11 +57,13 @@ class SliderController extends Controller
         $slider->delete();
         if ($slider) {
             return response()->json([
-                'success' => 'success',
+                'status' => 'success',
+                'message' => 'Data Berhasil dihapus',
             ]);
         } else {
             return response()->json([
-                'error' => 'error',
+                'status' => 'error',
+                'message' => 'Data gagal dihapus',
             ]);
         }
     }

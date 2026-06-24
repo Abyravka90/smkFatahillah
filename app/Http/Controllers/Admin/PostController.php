@@ -127,7 +127,7 @@ class PostController extends Controller
         $post->delete();
         if ($post) {
             return response()->json([
-                'success' => 'Data berhasil dihapus',
+                'status' => 'success', 'message' => 'Data berhasil dihapus',
             ]);
         } else {
             return response()->json([

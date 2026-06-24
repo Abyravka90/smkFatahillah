@@ -81,14 +81,9 @@ class VideoController extends Controller
     {
         $video = Video::findOrFail($id);
         $video->delete();
-        if ($video) {
-            return response()->json([
-                'success' => 'Data Berhasil dihapus',
-            ]);
-        } else {
-            return response()->json([
-                'error' => 'Data gagal dihapus',
-            ]);
-        }
+        return response()->json([
+            'status' => 'success',
+            'message' => 'Data Berhasil dihapus',
+        ]);
     }
 }
