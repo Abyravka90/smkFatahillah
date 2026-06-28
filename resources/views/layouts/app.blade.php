@@ -75,33 +75,38 @@
                                 href="{{ route('admin.post.index') }}"><i class="fas fa-book-open"></i>
                                 <span>Berita</span></a></li>
                         @endcan
-                        @canany(['otkp.index', 'o_t_k_p_s.index'])
-                            <li class="{{ setActive('admin/otkp') }}"><a class="nav-link" href="{{ route('admin.otkp.index') }}"><i class="fas fa-book-open"></i><span>Pages</span></a></li>
-                        @endcanany
-                        @canany(['tkj.index', 'TeknikKomputerJaringan.index'])
-                            <li class="{{ setActive('admin/tkj') }}"><a class="nav-link" href="{{ route('admin.tkj.index') }}"><i class="fas fa-book-open"></i><span>Pages</span></a></li>
-                        @endcanany
-                        @can('kesiswaan.index')
-                            <li class="{{ setActive('admin/kesiswaan') }}"><a class="nav-link" href="{{ route('admin.kesiswaan.index') }}"><i class="fas fa-book-open"></i><span>Pages</span></a></li>
-                        @endcan
-                        @canany(['kurikulum.index', 'kurikulums.index'])
-                            <li class="{{ setActive('admin/kurikulum') }}"><a class="nav-link" href="{{ route('admin.kurikulum.index') }}"><i class="fas fa-book-open"></i><span>Pages</span></a></li>
-                        @endcanany
-                        @canany(['pramuka.index', 'pramukas.index'])
-                            <li class="{{ setActive('admin/pramuka') }}"><a class="nav-link" href="{{ route('admin.pramuka.index') }}"><i class="fas fa-book-open"></i><span>Pages</span></a></li>
-                        @endcanany
-                        @can('keislaman.index')
-                            <li class="{{ setActive('admin/keislaman') }}"><a class="nav-link" href="{{ route('admin.keislaman.index') }}"><i class="fas fa-book-open"></i><span>Keislaman</span></a></li>
-                        @endcan
-                        @can('hubunganindustri.index')
-                            <li class="{{ setActive('admin/hubunganindustri') }}"><a class="nav-link" href="{{ route('admin.hubunganindustri.index') }}"><i class="fas fa-book-open"></i><span>Hubungan Industri</span></a></li>
-                        @endcan
-                        @can('saranaprasarana.index')
-                            <li class="{{ setActive('admin/saranaprasarana') }}"><a class="nav-link" href="{{ route('admin.saranaprasarana.index') }}"><i class="fas fa-book-open"></i><span>Sarana & Prasarana</span></a></li>
-                        @endcan
-                        @can('kepalasekolah.index')
-                            <li class="{{ setActive('admin/kepalasekolah') }}"><a class="nav-link" href="{{ route('admin.kepalasekolah.index') }}"><i class="fas fa-book-open"></i><span>Kepala Sekolah</span></a></li>
-                        @endcan
+                        <li class="dropdown">
+                            <a href="#" class="nav-link has-dropdown"><i class="fas fa-book-open"></i><span>Pages</span></a>
+                            <ul class="dropdown-menu">
+                                @canany(['otkp.index', 'o_t_k_p_s.index'])
+                                    <li class="{{ setActive('admin/otkp') }}"><a class="nav-link" href="{{ route('admin.otkp.index') }}">OTKP</a></li>
+                                @endcanany
+                                @canany(['tkj.index', 'TeknikKomputerJaringan.index'])
+                                    <li class="{{ setActive('admin/tkj') }}"><a class="nav-link" href="{{ route('admin.tkj.index') }}">TKJ</a></li>
+                                @endcanany
+                                @can('kesiswaan.index')
+                                    <li class="{{ setActive('admin/kesiswaan') }}"><a class="nav-link" href="{{ route('admin.kesiswaan.index') }}">Kesiswaan</a></li>
+                                @endcan
+                                @canany(['kurikulum.index', 'kurikulums.index'])
+                                    <li class="{{ setActive('admin/kurikulum') }}"><a class="nav-link" href="{{ route('admin.kurikulum.index') }}">Kurikulum</a></li>
+                                @endcanany
+                                @canany(['pramuka.index', 'pramukas.index'])
+                                    <li class="{{ setActive('admin/pramuka') }}"><a class="nav-link" href="{{ route('admin.pramuka.index') }}">Pramuka</a></li>
+                                @endcanany
+                                @can('keislaman.index')
+                                    <li class="{{ setActive('admin/keislaman') }}"><a class="nav-link" href="{{ route('admin.keislaman.index') }}">Keislaman</a></li>
+                                @endcan
+                                @can('hubunganindustri.index')
+                                    <li class="{{ setActive('admin/hubunganindustri') }}"><a class="nav-link" href="{{ route('admin.hubunganindustri.index') }}">Hubungan Industri</a></li>
+                                @endcan
+                                @can('saranaprasarana.index')
+                                    <li class="{{ setActive('admin/saranaprasarana') }}"><a class="nav-link" href="{{ route('admin.saranaprasarana.index') }}">Sarana & Prasarana</a></li>
+                                @endcan
+                                @can('kepalasekolah.index')
+                                    <li class="{{ setActive('admin/kepalasekolah') }}"><a class="nav-link" href="{{ route('admin.kepalasekolah.index') }}">Kepala Sekolah</a></li>
+                                @endcan
+                            </ul>
+                        </li>
 
                         <li class="{{ setActive('admin/kontributor') }}"><a class="nav-link"
                                 href="{{ route('admin.kontributor.index') }}"><i class="fas fa-book-open"></i>
