@@ -16,6 +16,7 @@ class DatabaseSeeder extends Seeder
             RolePermissionSeeder::class,
             DummyContentSeeder::class,
             PagesContentSeeder::class,
+            ProfileSectionSeeder::class, // <-- Add this line
         ]);
     }
 }
