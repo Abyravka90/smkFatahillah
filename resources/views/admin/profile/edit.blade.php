@@ -62,14 +62,40 @@
 
 
                             <div class="form-group">
-                                <label>KONTEN</label>
-                                <textarea class="form-control content @error('content') is-invalid @enderror" name="content" placeholder="Masukkan Konten / Isi Berita" rows="10">{!! old('content', $profile->content ?? '') !!}</textarea>
+                                <label>KONTEN PROFIL UMUM</label>
+                                <textarea class="form-control content @error('content') is-invalid @enderror" name="content" placeholder="Masukkan Konten Profil Umum" rows="5">{!! old('content', $profile->content ?? '') !!}</textarea>
                                 @error('content')
                                 <div class="invalid-feedback" style="display: block">
                                     {{ $message }}
                                 </div>
                                 @enderror
                             </div>
+
+                            <div class="form-group">
+                                <label>Sejarah</label>
+                                <textarea class="form-control content @error('sejarah_content') is-invalid @enderror" name="sejarah_content" placeholder="Masukkan Konten Sejarah" rows="5">{!! old('sejarah_content', $profile->sejarah_content ?? '') !!}</textarea>
+                            </div>
+
+                            <div class="form-group">
+                                <label>Visi & Misi</label>
+                                <textarea class="form-control content @error('visi_misi_content') is-invalid @enderror" name="visi_misi_content" placeholder="Masukkan Konten Visi & Misi" rows="5">{!! old('visi_misi_content', $profile->visi_misi_content ?? '') !!}</textarea>
+                            </div>
+                            
+                            <div class="form-group">
+                                <label>Struktur Organisasi (Gambar)</label>
+                                <input type="file" name="struktur_organisasi_image" class="form-control @error('struktur_organisasi_image') is-invalid @enderror">
+                            </div>
+
+                            <div class="form-group">
+                                <label>Hymne Fatahillah</label>
+                                <textarea class="form-control content @error('hymne_fatahillah_content') is-invalid @enderror" name="hymne_fatahillah_content" placeholder="Masukkan Lirik Hymne" rows="5">{!! old('hymne_fatahillah_content', $profile->hymne_fatahillah_content ?? '') !!}</textarea>
+                            </div>
+
+                            <div class="form-group">
+                                <label>Mars Fatahillah</label>
+                                <textarea class="form-control content @error('mars_fatahillah_content') is-invalid @enderror" name="mars_fatahillah_content" placeholder="Masukkan Lirik Mars" rows="5">{!! old('mars_fatahillah_content', $profile->mars_fatahillah_content ?? '') !!}</textarea>
+                            </div>
+
 
                             <div class="form-group">
                                 <label>Link Google Maps</label>

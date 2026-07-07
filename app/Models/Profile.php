@@ -16,4 +16,11 @@ class Profile extends Model
             get: fn ($value) => url('storage/profile/'.$value),
         );
     }
+
+    public function strukturOrganisasiImage(): Attribute
+    {
+        return Attribute::make(
+            get: fn ($value) => url('storage/struktur_organisasi/'.$value),
+        );
+    }
 }
