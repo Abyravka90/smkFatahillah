@@ -13,16 +13,16 @@ class ProfileSectionSeeder extends Seeder
      */
     public function run(): void
     {
-        // Find the first profile, or create one if it doesn't exist
+        // Find the first profile to update
         $profile = Profile::first();
 
         if ($profile) {
             DB::table('profiles')->where('id', $profile->id)->update([
-                'sejarah_content' => '<p>Ini adalah contoh konten sejarah sekolah. Lorem ipsum dolor sit amet, consectetur adipiscing elit.</p>',
-                'struktur_organisasi_image' => 'placeholders/struktur.jpg', // Placeholder path
-                'visi_misi_content' => '<h2>Visi</h2><p>Menjadi lembaga pendidikan vokasi yang unggul.</p><h2>Misi</h2><ol><li>Misi pertama...</li><li>Misi kedua...</li></ol>',
-                'hymne_fatahillah_content' => '<p>Lirik Hymne Fatahillah...</p>',
-                'mars_fatahillah_content' => '<p>Lirik Mars Fatahillah...</p>',
+                'sejarah_content' => '<h2>Sejarah Singkat</h2><p>SMK Fatahillah Cileungsi didirikan pada tahun 2008 dengan tujuan untuk menyediakan pendidikan kejuruan yang berkualitas dan relevan dengan kebutuhan industri di wilayah Cileungsi dan sekitarnya.</p>',
+                'struktur_organisasi_image' => 'placeholders/struktur.png',
+                'visi_misi_content' => '<h2>Visi</h2><p>Menjadi lembaga pendidikan vokasi terdepan yang menghasilkan lulusan berakhlak mulia, kompeten, dan berdaya saing global.</p><h2>Misi</h2><ol><li>Meningkatkan kualitas pembelajaran berbasis teknologi.</li><li>Mengembangkan karakter siswa yang religius dan bertanggung jawab.</li><li>Menjalin kemitraan strategis dengan dunia industri.</li></ol>',
+                'hymne_fatahillah_content' => '<h2>Hymne Fatahillah</h2><p>Dengan semangat membara, kami melangkah maju. Mengukir prestasi, untuk nusa dan bangsa. Fatahillah jaya, selamanya...</p>',
+                'mars_fatahillah_content' => '<h2>Mars Fatahillah</h2><p>Bangkitlah pemuda harapan bangsa, bersama SMK Fatahillah. Siap berkarya, membangun negeri, menuju Indonesia yang mandiri.</p>',
             ]);
         }
     }
