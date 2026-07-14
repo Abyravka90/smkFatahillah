@@ -12,6 +12,7 @@ use App\Http\Controllers\Admin\KepalaSekolahController;
 use App\Http\Controllers\Admin\KesiswaanController;
 use App\Http\Controllers\Admin\KontributorController;
 use App\Http\Controllers\Admin\KurikulumController;
+use App\Http\Controllers\Admin\MikrotikController;
 use App\Http\Controllers\Admin\LogoController;
 use App\Http\Controllers\Admin\OTKPController;
 use App\Http\Controllers\Admin\PermissionController;
@@ -143,6 +144,11 @@ Route::prefix('admin')->group(function () {
                 'as' => 'admin',
             ]
         );
+
+        // Mikrotik Routes
+        Route::get('/mikrotik', [MikrotikController::class, 'index'])->name('admin.mikrotik.index');
+        Route::get('/mikrotik/edit', [MikrotikController::class, 'edit'])->name('admin.mikrotik.edit');
+        Route::put('/mikrotik', [MikrotikController::class, 'update'])->name('admin.mikrotik.update');
 
         Route::resource('/kesiswaan', KesiswaanController::class,
             [
