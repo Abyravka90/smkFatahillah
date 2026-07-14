@@ -33,6 +33,7 @@ class UpdateMikrotikRequest extends FormRequest
             'sertifikat_1'             => 'nullable|file|mimes:jpeg,png,jpg,gif,pdf|max:5120',
             'sertifikat_2'             => 'nullable|file|mimes:jpeg,png,jpg,gif,pdf|max:5120',
             'sertifikat_3'             => 'nullable|file|mimes:jpeg,png,jpg,gif,pdf|max:5120',
+            'sertifikat_trainer'       => 'nullable|file|mimes:pdf|max:5120',
         ];
     }
 }

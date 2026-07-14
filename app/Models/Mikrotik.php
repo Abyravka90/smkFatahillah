@@ -16,5 +16,6 @@ class Mikrotik extends Model
         'sertifikat_2',
         'sertifikat_3',
         'tentang_mikrotik_academy',
+        'sertifikat_trainer',
     ];
 }

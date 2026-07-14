@@ -31,7 +31,7 @@ class MikrotikController extends Controller
 
         $image_fields = [
             'foto_kegiatan_1', 'foto_kegiatan_2', 'foto_kegiatan_3',
-            'sertifikat_1', 'sertifikat_2', 'sertifikat_3'
+            'sertifikat_1', 'sertifikat_2', 'sertifikat_3', 'sertifikat_trainer'
         ];
 
         foreach ($image_fields as $field) {

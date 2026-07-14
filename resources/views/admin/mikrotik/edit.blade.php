@@ -25,6 +25,15 @@
                         </div>
 
                         <div class="form-group">
+                            <label>Sertifikat Trainer (PDF)</label>
+                            <input type="file" name="sertifikat_trainer" class="form-control @error('sertifikat_trainer') is-invalid @enderror">
+                            @error('sertifikat_trainer')<div class="invalid-feedback">{{ $message }}</div>@enderror
+                            @if($mikrotik->sertifikat_trainer)
+                                <a href="{{ asset('storage/' . $mikrotik->sertifikat_trainer) }}" target="_blank" class="mt-2">Lihat Sertifikat Trainer Saat Ini</a>
+                            @endif
+                        </div>
+
+                        <div class="form-group">
                             <label>Materi</label>
                             <textarea class="form-control content @error('materi') is-invalid @enderror" name="materi" placeholder="Masukkan deskripsi materi" rows="10">{{ old('materi', $mikrotik->materi) }}</textarea>
                             @error('materi')<div class="invalid-feedback">{{ $message }}</div>@enderror
@@ -32,7 +41,7 @@
 
                         <div class="form-group">
                             <label>Tentang Mikrotik Academy</label>
-                            <textarea class="form-control" name="tentang_mikrotik_academy" placeholder="Masukkan deskripsi tentang Mikrotik Academy" rows="5">{{ old('tentang_mikrotik_academy', $mikrotik->tentang_mikrotik_academy) }}</textarea>
+                            <textarea class="form-control content @error('tentang_mikrotik_academy') is-invalid @enderror" name="tentang_mikrotik_academy" placeholder="Masukkan deskripsi tentang Mikrotik Academy" rows="5">{{ old('tentang_mikrotik_academy', $mikrotik->tentang_mikrotik_academy) }}</textarea>
                             @error('tentang_mikrotik_academy')<div class="invalid-feedback">{{ $message }}</div>@enderror
                         </div>
 

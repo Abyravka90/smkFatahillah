@@ -27,6 +27,16 @@
                   <td>{{ $mikrotik->trainer ?? 'Belum diisi' }}</td>
                 </tr>
                 <tr>
+                  <th>Sertifikat Trainer</th>
+                  <td>
+                    @if($mikrotik->sertifikat_trainer)
+                      <a href="{{ asset('storage/' . $mikrotik->sertifikat_trainer) }}" target="_blank">Lihat Dokumen</a>
+                    @else
+                      Belum diunggah
+                    @endif
+                  </td>
+                </tr>
+                <tr>
                   <th>Materi</th>
                   <td>{!! Str::limit($mikrotik->materi, 200) ?? 'Belum diisi' !!}</td>
                 </tr>
