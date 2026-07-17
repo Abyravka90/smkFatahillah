@@ -90,6 +90,12 @@ class PermissionTableSeeder2 extends Seeder
             'saranaprasarana.index',
             'saranaprasarana.edit',
             'saranaprasarana.delete',
+
+            // Mikrotik
+            'mikrotik.create',
+            'mikrotik.index',
+            'mikrotik.edit',
+            'mikrotik.delete',
         ];
 
         foreach ($permissions as $name) {

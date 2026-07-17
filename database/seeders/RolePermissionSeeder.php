@@ -22,6 +22,7 @@ class RolePermissionSeeder extends Seeder
             'hubunganindustri',
             'saranaprasarana',
             'kepalasekolah',
+            'mikrotik',
         ];
 
         $divisionsPlural = [
@@ -60,6 +61,7 @@ class RolePermissionSeeder extends Seeder
             'admin_sarpras' => ['saranaprasarana'],
             'admin_pramuka' => ['pramuka', 'pramukas'],
             'admin_kepalasekolah' => ['kepalasekolah'],
+            'admin_mikrotik' => ['mikrotik'],
         ];
 
         $roleUsers = [
@@ -94,6 +96,10 @@ class RolePermissionSeeder extends Seeder
             'admin_kepalasekolah' => [
                 'name' => 'Admin Kepala Sekolah',
                 'email' => 'kepalasekolah@gmail.com',
+            ],
+            'admin_mikrotik' => [
+                'name' => 'Admin Mikrotik',
+                'email' => 'mikrotik@gmail.com',
             ],
         ];
 

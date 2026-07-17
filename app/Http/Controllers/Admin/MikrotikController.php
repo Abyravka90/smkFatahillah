@@ -10,6 +10,12 @@ use Illuminate\Support\Facades\Storage;
 
 class MikrotikController extends Controller
 {
+    public function __construct()
+    {
+        $this->middleware(['permission:mikrotik.index'])->only(['index']);
+        $this->middleware(['permission:mikrotik.edit'])->only(['edit', 'update']);
+    }
+
     public function index()
     {
         $mikrotik = Mikrotik::firstOrCreate([]);

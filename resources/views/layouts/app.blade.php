@@ -75,7 +75,7 @@
                                 href="{{ route('admin.post.index') }}"><i class="fas fa-book-open"></i>
                                   <span>Berita</span></a></li>
                         @endcan
-                        @can('posts.index')
+                        @can('mikrotik.index')
                         <li class="{{ setActive('admin/mikrotik') }}"><a class="nav-link"
                                 href="{{ route('admin.mikrotik.index') }}"><i class="fas fa-network-wired"></i>
                                 <span>Mikrotik</span></a></li>
