@@ -29,19 +29,26 @@ class SpmbController extends Controller
             'file' => 'nullable|file|mimes:pdf',
             'link' => 'nullable',
             'title' => 'required',
-            'title' => 'required',
+            'content' => 'required',
         ]);
+
+        $imageName = null;
         if ($request->file('image')) {
             $image = $request->file('image');
-            $image->storeAs('spmb/image', $image->hashName(), 'public');
+            $imageName = $image->hashName();
+            $image->storeAs('spmb/image', $imageName, 'public');
         }
+
+        $fileName = null;
         if ($request->file('file')) {
             $file = $request->file('file');
-            $file->storeAs('spmb/file', $file->hashName(), 'public');
+            $fileName = $file->hashName();
+            $file->storeAs('spmb/file', $fileName, 'public');
         }
+
         $spmb = Spmb::create([
-            'image' => $image->hashName(),
-            'file' => $file->hashName(),
+            'image' => $imageName,
+            'file' => $fileName,
             'link' => $request->input('link'),
             'title' => $request->input('title'),
             'content' => $request->input('content'),
@@ -76,8 +83,9 @@ class SpmbController extends Controller
                 Storage::disk('public')->delete('spmb/image/'.$spmb->image);
             }
             $image = $request->file('image');
-            $image->storeAs('spmb/image', $image->hashName(), 'public');
-            $data['image'] = $image->hashName();
+            $imageName = $image->hashName();
+            $image->storeAs('spmb/image', $imageName, 'public');
+            $data['image'] = $imageName;
         }
 
         // if has new file, store it and delete old one
@@ -86,8 +94,9 @@ class SpmbController extends Controller
                 Storage::disk('public')->delete('spmb/file/'.$spmb->file);
             }
             $file = $request->file('file');
-            $file->storeAs('spmb/file', $file->hashName(), 'public');
-            $data['file'] = $file->hashName();
+            $fileName = $file->hashName();
+            $file->storeAs('spmb/file', $fileName, 'public');
+            $data['file'] = $fileName;
         }
 
         $updated = $spmb->update($data);
@@ -102,11 +111,11 @@ class SpmbController extends Controller
     public function destroy($id)
     {
         $spmb = Spmb::findOrFail($id);
-        if ($spmb->file && Storage::disk('public')->exists('spmb/image/'.basename($spmb->image))) {
-            Storage::disk('public')->delete('spmb/image/'.basename($spmb->image));
+        if ($spmb->image && Storage::disk('public')->exists('spmb/image/'.$spmb->image)) {
+            Storage::disk('public')->delete('spmb/image/'.$spmb->image);
         }
-        if ($spmb->file && Storage::disk('public')->exists('spmb/file'.basename($spmb->file))) {
-            Storage::disk('public')->delete('spmb/file/'.basename($spmb->file));
+        if ($spmb->file && Storage::disk('public')->exists('spmb/file/'.$spmb->file)) {
+            Storage::disk('public')->delete('spmb/file/'.$spmb->file);
         }
         $spmb->delete();
         if ($spmb) {
