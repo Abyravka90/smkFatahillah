@@ -45,22 +45,24 @@ class OTKPController extends Controller
     {
         //
         $this->validate($request, [
-            'image' => 'image',
+            'image' => 'nullable|image',
             'name' => 'required',
             'content' => 'required',
         ]);
 
         // request dulu gambarnya
-        $image = $request->file('image');
-
-        // disimpan di storage
-        $image->storeAs('otkp', $image->hashName(), 'public');
+        $imageName = '';
+        if ($request->file('image')) {
+            $image = $request->file('image');
+            $imageName = $image->hashName();
+            $image->storeAs('otkp', $imageName, 'public');
+        }
 
         // simpan di databse
         $otkps = OTKP::create([
             'name' => $request->input('name'),
             'content' => $request->input('content'),
-            'image' => $image->hashName(),
+            'image' => $imageName,
         ]);
         if ($otkps) {
             return redirect()->route('admin.otkp.index')->with(['success' => 'Data Berhasil Ditambahkan']);

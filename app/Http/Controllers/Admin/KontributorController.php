@@ -29,25 +29,37 @@ class KontributorController extends Controller
     public function store(Request $request)
     {
         $this->validate($request, [
-            'image_1' => 'image',
-            'image_2' => 'image',
-            'image_3' => 'image',
+            'image_1' => 'nullable|image',
+            'image_2' => 'nullable|image',
+            'image_3' => 'nullable|image',
             'title' => 'required',
             'content' => 'required',
             'jurusan_id' => 'required|exists:jurusans,id',
         ]);
 
-        $image_1 = $request->file('image_1');
-        $image_1->storeAs('kontributor/image_1', $image_1->hashName(), 'public');
-        $image_2 = $request->file('image_2');
-        $image_2->storeAs('kontributor/image_2', $image_2->hashName(), 'public');
-        $image_3 = $request->file('image_3');
-        $image_3->storeAs('kontributor/image_3', $image_3->hashName(), 'public');
+        $imageName1 = '';
+        if ($request->file('image_1')) {
+            $image_1 = $request->file('image_1');
+            $imageName1 = $image_1->hashName();
+            $image_1->storeAs('kontributor/image_1', $imageName1, 'public');
+        }
+        $imageName2 = '';
+        if ($request->file('image_2')) {
+            $image_2 = $request->file('image_2');
+            $imageName2 = $image_2->hashName();
+            $image_2->storeAs('kontributor/image_2', $imageName2, 'public');
+        }
+        $imageName3 = '';
+        if ($request->file('image_3')) {
+            $image_3 = $request->file('image_3');
+            $imageName3 = $image_3->hashName();
+            $image_3->storeAs('kontributor/image_3', $imageName3, 'public');
+        }
 
         $kontributor = Kontributor::create([
-            'image_1' => $image_1->hashName(),
-            'image_2' => $image_2->hashName(),
-            'image_3' => $image_3->hashName(),
+            'image_1' => $imageName1,
+            'image_2' => $imageName2,
+            'image_3' => $imageName3,
             'title' => $request->input('title'),
             'content' => $request->input('content'),
             'jurusan_id' => $request->input('jurusan_id'),
@@ -109,7 +121,7 @@ class KontributorController extends Controller
         $kontributor = Kontributor::findOrFail($id);
         Storage::disk('public')->delete('kontributor/image_1/'.basename($kontributor->image_1));
         Storage::disk('public')->delete('kontributor/image_2/'.basename($kontributor->image_2));
-        Storage::disk('public')->delete('kontributor/image_3'.basename($kontributor->image_3));
+        Storage::disk('public')->delete('kontributor/image_3/'.basename($kontributor->image_3));
         $kontributor->delete();
         if ($kontributor) {
             return response()->json([
